@@ -45,7 +45,7 @@
     </p>
     <p>An example glass plate image, of a cathedral in its three channels:</p>
     <img src="proj1_data/cathedral.jpg" alt="Cathedral Glass Plate" style="display: block; margin: 0 auto; width: 10%; height: auto;">
-    <p>First, the images are split into thirds, and designated as RGB sections. Each of these are cropped together, to remove whitespace and borders. Then, the images are processed in pairs: each image is downscaled to reduce pixel count, and repeatedly aligned using a similarity score of Normalized Cross-Correlation, in a loop while upscaled until the original resolution is reached. Then the three aligned images are overlaid to form a color image.</p>
+    <p>First, the images are split into thirds, and designated as RGB sections. Each of these are cropped together, to remove whitespace and borders. Then, the images are processed in pairs: red and blue are both aligned with green, as each image is downscaled to reduce pixel count, and repeatedly aligned using a similarity score of Normalized Cross-Correlation, in a loop while upscaled until the original resolution is reached. Then the three aligned images are overlaid to form a color image. The pixel amounts shifted in the red and blue images are shown below.</p>
     <p>The processed images:</p>
     <div class="gallery">
         <div class="gallery-item">
