@@ -42,7 +42,7 @@
 <body>
     <h1>Project 2: Fun with Filters and Frequencies</h1>
     <p>In this project, we used filter convolutions to create various effects, including blurring, sharpening, edge detection, low/high frequency extraction, hybrid images, and blended images.</p>
-    <h2>Gradient Magnitude</h2>
+    <h2>Edges/Gradient Magnitude</h2>
     <p>In order to find the edges of an image, we can first calculate the partial derivatives of the image with the finite difference operators, [[1 -1]] for dx direction or [[1] [-1]] for dy direction, which are convolved with the image to get the change in pixel values in the x and y directions. With directional derivatives in both directions, the overall gradient magnitude can be computed as sqrt(dx^2 + dy^2) elementwise over the two images, which can be binarized where the magnitude meets a certain threshold to produce an edge image. Below are the dx and dy of the cameraman image, the gradient magnitude image, and the binarized edge image.</p>
     <div class="gallery">
         <div class="gallery-item">
@@ -82,7 +82,21 @@
     </div>
     
     <h2>Image Sharpening</h2>
-    
+    <p>We can work with the frequencies of an image to enhance certain features. Applying a gaussian filter to blur the image acts as a low pass filter, allowing only the low frequencies to show. We can then extract the high frequencies by subtracting the blurred low frequencies from the original image. This combination of blurring and subtracting can be done with one filter by using the unit impulse minus the gaussian filter. Below are the high frequencies of the taj mahal computed by convolving the original image with the high frequency filter. If we then add the high frequencies back to the original image, we get a sharpened version of the image with more prominent features.</p>
+    <div class="gallery">
+        <div class="gallery-item">
+            <img src="proj2_data/taj.jpg" alt="Taj mahal">
+            <p>Taj Mahal original</p>
+        </div>
+        <div class="gallery-item">
+            <img src="proj2_data/taj_high_freq.jpg" alt="Taj mahal high freq">
+            <p>Taj Mahal high frequencies</p>
+        </div>
+        <div class="gallery-item">
+            <img src="proj2_data/taj_sharp.jpg" alt="Taj mahal sharp">
+            <p>Taj Mahal sharpened</p>
+        </div>
+    </div>
     
     
     
