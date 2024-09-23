@@ -40,6 +40,52 @@
     </style>
 </head>
 <body>
+    <h1>Project 2: Fun with Filters and Frequencies</h1>
+    <p>In this project, we used filter convolutions to create various effects, including blurring, sharpening, edge detection, low/high frequency extraction, hybrid images, and blended images.</p>
+    <h2>Gradient Magnitude</h2>
+    <p>In order to find the edges of an image, we can first calculate the partial derivatives of the image with the finite difference operators, [[1 -1]] for dx direction or [[1] [-1]] for dy direction, which are convolved with the image to get the change in pixel values in the x and y directions. With directional derivatives in both directions, the overall gradient magnitude can be computed as sqrt(dx^2 + dy^2) elementwise over the two images, which can be binarized where the magnitude meets a certain threshold to produce an edge image. Below are the dx and dy of the cameraman image, the gradient magnitude image, and the binarized edge image.</p>
+    <div class="gallery">
+        <div class="gallery-item">
+            <img src="proj2_data/cameraman_dx.jpg" alt="Cameraman dx">
+            <p>Cameraman dx</p>
+        </div>
+        <div class="gallery-item">
+            <img src="proj2_data/cameraman_dy.jpg" alt="Cameraman dy">
+            <p>Cameraman dy</p>
+        </div>
+        <div class="gallery-item">
+            <img src="proj2_data/cameraman_magnitude.jpg" alt="Cameraman magnitude">
+            <p>Cameraman magnitude</p>
+        </div>
+        <div class="gallery-item">
+            <img src="proj2_data/cameraman_binary.jpg" alt="Cameraman binarized">
+            <p>Cameraman binarized</p>
+        </div>
+    </div>
+    <p>To eliminate the noisy parts, we first apply a Gaussian blur to the image by convolving it with a smaller Gaussian kernel. This computes a random weighted moving average over the image pixels, which averages out the effects of noise and blurs sharp features. This normally requires two separate convolutions, but the gaussian filter can first be convolved with the dx dy finite difference operators to get the below derivative-of-gaussian filters, which does the same operation in one convolution.</p>
+    <div class="gallery">
+        <div class="gallery-item">
+            <img src="proj2_data/dog_x.jpg" alt="DoG x">
+            <p>Derivative of Gaussian x</p>
+        </div>
+        <div class="gallery-item">
+            <img src="proj2_data/dog_y.jpg" alt="DoG y">
+            <p>Derivative of Gaussian y</p>
+        </div>
+    </div>
+    <p>The resulting image is different from the above edge image in that the edges of the man are more clearly defined and the noise elements around him are less prominent.</p>
+    <div class="gallery">
+        <div class="gallery-item">
+            <img src="proj2_data/cameraman_binary_gauss.jpg" alt="Cameraman binarized gaussian">
+            <p>Cameraman binarized with DoG</p>
+        </div>
+    </div>
+    
+    <h2>Image Sharpening</h2>
+    
+    
+    
+    
     <h1>Project 1: Colorizing the Prokudin-Gorskii photo collection</h1>
     <p>In this project, we created algorithms to transform the Prokudin-Gorskii glass plate negatives taken of various images in separate R, G, and B channels to color images. The basic algorithm involves cutting the image into thirds, then iterating over various offsets of the image to compare alignment similarity scores, then upscaling the resolution to search again with more precision.
     </p>
