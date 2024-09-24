@@ -117,9 +117,30 @@
             <p>Hybrid cat-man</p>
         </div>
     </div>
-    <p>Some other examples of these hybrid images</p>
+    <p>Another example of this hybrid frequency blending is this picture of a golden retriever and obama:</p>
+    <div class="gallery">
+        <div class="gallery-item">
+            <img src="proj2_data/obama.jpg" alt="obama">
+            <p>Obama</p>
+        </div>
+        <div class="gallery-item">
+            <img src="proj2_data/dog.jpeg" alt="dog">
+            <p>Golden retriever</p>
+        </div>
+        <div class="gallery-item">
+            <img src="proj2_data/dog_obama.jpg" alt="obama dog">
+            <p>Hybrid obama-dog</p>
+        </div>
+    </div>
+
+
+
+    <h2>Multiresolution Blending</h2>
+    <p>In order to blend two images together with a less obvious seam between them, we can use the different frequencies again. By repeatedly applying the blurring operation to the same image, we can create a gaussian stack of progressively filtered frequencies. If we then subtract each stack image from its previous image, we can get the band between frequencies, essentially decomposing the image into its levels of frequencies. These bands compose the laplacian stack. The laplacian stack for the apple and orange pictures are shown below.</p>    
     
-    
+
+
+
     <h1>Project 1: Colorizing the Prokudin-Gorskii photo collection</h1>
     <p>In this project, we created algorithms to transform the Prokudin-Gorskii glass plate negatives taken of various images in separate R, G, and B channels to color images. The basic algorithm involves cutting the image into thirds, then iterating over various offsets of the image to compare alignment similarity scores, then upscaling the resolution to search again with more precision.
     </p>
