@@ -198,12 +198,12 @@
     <h2>Multiresolution Blending</h2>
     <p>In order to blend two images together with a less obvious seam between them, we can use the different frequencies again. By repeatedly applying the blurring operation to the same image, we can create a gaussian stack of progressively filtered frequencies. If we then subtract each stack image from its previous image, we can get the band between frequencies, essentially decomposing the image into its levels of frequencies. These bands compose the laplacian stack. Below, in order, we have the gaussian stacks of the apple, orange, and mask (which is a transition from all ones to all zeros corresponding to each half), then the laplacian stacks of the apple, orange, and combined orapple.</p>   
     <div style="width: 100vw;">
-        <img src="proj2_data/apple_g_stack.png" style="width: 95vw;">
-        <img src="proj2_data/orange_g_stack.png" style="width: 95vw;">
-        <img src="proj2_data/mask_g_stack.png" style="width: 95vw;">
-        <img src="proj2_data/apple_l_stack.png" style="width: 95vw;">
-        <img src="proj2_data/orange_l_stack.png" style="width: 95vw;">
-        <img src="proj2_data/orapple_l_stack.png" style="width: 95vw;">
+        <img src="proj2_data/apple_g_stack.png" style="width: 99vw;">
+        <img src="proj2_data/orange_g_stack.png" style="width: 99vw;">
+        <img src="proj2_data/mask_g_stack.png" style="width: 99vw;">
+        <img src="proj2_data/apple_l_stack.png" style="width: 99vw;">
+        <img src="proj2_data/orange_l_stack.png" style="width: 99vw;">
+        <img src="proj2_data/orapple_l_stack.png" style="width: 99vw;">
     </div>
     <div class="gallery">
         <div class="gallery-item">
@@ -213,6 +213,7 @@
     </div>
     <p>The more natural seam is due to the increasing band size of the mask as it is increasingly blurred, and this band increase corresponds to more and more crude features, meaning that large features like color are blended together further, while more fine details like the texture are still distinct on each end.</p>
     <p>A similar example can be done with a plum and a peach:</p>
+    <img src="proj2_data/pleach_plots.png" style="width: 60vw; display: block; margin-left: auto; margin-right: auto;">
     <div class="gallery">
         <div class="gallery-item">
             <img src="proj2_data/plum.jpg" alt="plum">
