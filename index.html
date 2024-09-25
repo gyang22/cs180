@@ -97,9 +97,32 @@
             <p>Taj Mahal sharpened</p>
         </div>
     </div>
-    <p>Another example of a sharpened image is this </p>
-
-    <p>If we blur a sharpened image and then sharpen it again, we get this result:</p>
+    <p>Another example of a sharpened image is this sheep: the small features are more prominent and the edges are more pronounced.</p>
+    <div class="gallery">
+        <div class="gallery-item">
+            <img src="proj2_data/sheep.jpg" alt="sheep">
+            <p>Sheep</p>
+        </div>
+        <div class="gallery-item">
+            <img src="proj2_data/sheep_high.jpg" alt="sheep high freq">
+            <p>Sheep high frequencies</p>
+        </div>
+        <div class="gallery-item">
+            <img src="proj2_data/sheep_sharp.jpg" alt="sheep sharpened">
+            <p>Sheep sharpened</p>
+        </div>
+    </div>
+    <p>We can also first blur the image, then sharpen it again. The result does not look like the original anymore, as blurring it eliminated many of the high frequencies, leaving less for the sharpen operation to work with.</p>
+    <div class="gallery">
+        <div class="gallery-item">
+            <img src="proj2_data/sheep_blur.jpg" alt="sheep blur">
+            <p>Sheep blurred</p>
+        </div>
+        <div class="gallery-item">
+            <img src="proj2_data/sheep_resharp.jpg" alt="sheep resharpened">
+            <p>Sheep resharpened</p>
+        </div>
+    </div>
 
     <h2>Hybrid Images</h2>
     <p>By using the low and high frequencies of an image, we can create a hybrid overlaid image by extracting the low and high frequencies as detailed above, then overlaying the two with an average. The result is a hybrid image which has prominent low frequency features when viewed blurred or from afar, then displays the high frequencies when viewed in focus or up close. Below is an example with a man and a cat.</p>
@@ -173,7 +196,8 @@
 
 
     <h2>Multiresolution Blending</h2>
-    <p>In order to blend two images together with a less obvious seam between them, we can use the different frequencies again. By repeatedly applying the blurring operation to the same image, we can create a gaussian stack of progressively filtered frequencies. If we then subtract each stack image from its previous image, we can get the band between frequencies, essentially decomposing the image into its levels of frequencies. These bands compose the laplacian stack. The laplacian stack for the apple and orange pictures are shown below.</p>    
+    <p>In order to blend two images together with a less obvious seam between them, we can use the different frequencies again. By repeatedly applying the blurring operation to the same image, we can create a gaussian stack of progressively filtered frequencies. If we then subtract each stack image from its previous image, we can get the band between frequencies, essentially decomposing the image into its levels of frequencies. These bands compose the laplacian stack. The laplacian stack for the apple and orange pictures are shown below.</p>   
+    <p></p> 
     
 
 
