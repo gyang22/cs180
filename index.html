@@ -196,7 +196,27 @@
 
 
     <h2>Multiresolution Blending</h2>
-    <p>In order to blend two images together with a less obvious seam between them, we can use the different frequencies again. By repeatedly applying the blurring operation to the same image, we can create a gaussian stack of progressively filtered frequencies. If we then subtract each stack image from its previous image, we can get the band between frequencies, essentially decomposing the image into its levels of frequencies. These bands compose the laplacian stack. The laplacian stack for the apple and orange pictures are shown below.</p>   
+    <p>In order to blend two images together with a less obvious seam between them, we can use the different frequencies again. By repeatedly applying the blurring operation to the same image, we can create a gaussian stack of progressively filtered frequencies. If we then subtract each stack image from its previous image, we can get the band between frequencies, essentially decomposing the image into its levels of frequencies. These bands compose the laplacian stack. Below, in order, we have the gaussian stacks of the apple, orange, and mask (which is a transition from all ones to all zeros corresponding to each half), then the laplacian stacks of the apple, orange, and combined orapple.</p>   
+    <img src="proj2_data/apple_g_stack.png">
+    <img src="proj2_data/orange_g_stack.png">
+    <img src="proj2_data/mask_g_stack.png">
+    <img src="proj2_data/apple_l_stack.png">
+    <img src="proj2_data/orange_l_stack.png">
+    <img src="proj2_data/orapple_l_stack.png">
+    <div class="gallery">
+        <div class="gallery-item">
+            <img src="proj2_data/rock.jpg" alt="rock">
+            <p>The Rock</p>
+        </div>
+        <div class="gallery-item">
+            <img src="proj2_data/egg.jpg" alt="egg">
+            <p>The Egg</p>
+        </div>
+        <div class="gallery-item">
+            <img src="proj2_data/rock_egg.jpg" alt="rock egg">
+            <p>Rock egg</p>
+        </div>
+    </div>
     <p></p> 
     
 
