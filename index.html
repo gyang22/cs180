@@ -40,6 +40,47 @@
     </style>
 </head>
 <body>
+    <h1>Project 3: Face Morphing and Modeling a Photo Collection</h1>
+    <p>In this project, we used the concept of transformations in geometric space, specifically affine transformations of images, to compute variations on image pairs, including midway hybrids of two faces, morph animations, mean faces of a population, and caricatures.</p>
+    <h2>Defining Correspondences</h2>
+    <p>In order to "move" an image to another image, we first need to define the triangles which segement the image into its key features. By selecting points corresponding to each other in each image, we can then triangulate between these points, using Delauney triangulation. The result on the average of the two point sets is the below triangulation, which vaguely captures the facial details. We can also see the triangulation on a face. Note that the corners must also be selected to triangulate the background as well.</p>
+    <div class="gallery">
+        <div class="gallery-item">
+            <img src="proj3_data/triangles.png">
+        </div>
+        <div class="gallery-item">
+            <img src="proj3_data/grant_tri.png">
+        </div>
+    </div>
+
+    <h2>Computing the "Mid-way Face"</h2>
+    <p>Using the triangles of the mean points from above, we can find the "mean shape" of the two images. This is helpful in defining a concrete set of triangles that match up in both images. Then, for each image, and for each triangle in the image, we can compute the inverse of the affine transformation matrix that maps points in the original image to the halfway face triangle. We can get the points in each triangle using a polygon mask, then multiplying the halfway points by the inverse affine matrix to get the corresponding points in the original image. Since values may not fall on an exact pixel, we use scikit-image's interpolation griddata function to correct assign the data to integer positions. Once each image has pixels filled in on the halfway image, we can then average the two morphed images to get the "mean face" below.</p>
+    <div class="gallery">
+        <div class="gallery-item">
+            <img src="proj3_data/grant_pic.jpg">
+            <p>Grant</p>
+        </div>
+        <div class="gallery-item">
+            <img src="proj3_data/mean_face.jpg">
+            <p>Grant-Kenny mean face</p>
+        </div>
+        <div class="gallery-item">
+            <img src="proj3_data/kenny_pic.jpg">
+            <p>Kenny</p>
+        </div>
+    </div>
+
+    <h2>The Morph Sequence</h2>
+    <p>In order to visualize the full morphing sequence from one image to another, we can generalize the previous portion: instead of morphing to 50%, we can morph on uniform intervals from 0% (the original image) to 100% (the target). This means when calculating the mean points, we instead use a weighted average between the two point sets to determine the common triangulation. We then run the morph process from before, with increasing weights on the target and decreasing weights on the original each time, to generate frames for the below morph sequence.</p>
+    <div class="gallery">
+        <div class="gallery-item">
+            <img src="proj3_data/morph_animation.gif">
+        </div>
+    </div>
+
+
+    
+
     <h1>Project 2: Fun with Filters and Frequencies</h1>
     <p>In this project, we used filter convolutions to create various effects, including blurring, sharpening, edge detection, low/high frequency extraction, hybrid images, and blended images.</p>
     <h2>Edges/Gradient Magnitude</h2>
