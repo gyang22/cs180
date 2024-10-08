@@ -47,6 +47,7 @@
     <div class="gallery">
         <div class="gallery-item">
             <img src="proj3_data/triangles.png">
+            <p>Mean face triangles</p>
         </div>
         <div class="gallery-item">
             <img src="proj3_data/grant_tri.png">
@@ -78,8 +79,57 @@
         </div>
     </div>
 
+    <h2>The "mean face" of a population</h2>
+    <p>We can visualize what the average member of a population looks like by averaging the pixel values of images of the members. However, in order to ensure the facial features align correctly, we first morph each member to the "average shape" of the population determined by the average of the facial key points, then take the pixelwise mean over all the images. The result below shows the average face of the FEI database, part 1, as well as some of the intermediate results of members warped to the average shape.</p>
+    <div class="gallery">
+        <div class="gallery-item">
+            <img src="proj3_data/33.jpg">
+            <p>Member example</p>
+        </div>
+        <div class="gallery-item">
+            <img src="proj3_data/66.jpg">
+            <p>Member example</p>
+        </div>
+        <div class="gallery-item">
+            <img src="proj3_data/99.jpg">
+            <p>Member example</p>
+        </div>
+        <div class="gallery-item">
+            <img src="proj3_data/fei_mean_face.jpg">
+            <p>Mean face</p>
+        </div>
+    </div>
+    <p>With this mean face, we can also experiment by warping into the mean shape, as well as warping the mean face into our own shape.</p>
+    <div class="gallery">
+        <div class="gallery-item">
+            <img src="proj3_data/grant_to_avg.jpg">
+            <p>Grant warped to mean face</p>
+        </div>
+        <div class="gallery-item">
+            <img src="proj3_data/avg_to_grant.jpg">
+            <p>Mean face warped to Grant</p>
+        </div>
+    </div>
 
-    
+    <h2>Caricatures: Extrapolating from the mean</h2>
+    <p>Another fun experiment we can do with face warping is to exaggerate the differences between one's own face and the population mean face. Specifically, we can add the difference (self - mean) * some alpha factor, then add it back to one's own points as the destination shape, which results in the differences between oneself and the mean to become cartoonishly large.</p>
+    <div class="gallery">
+        <div class="gallery-item">
+            <img src="proj3_data/grant_caricature.jpg">
+        </div>
+    </div>
+
+    <h2>Bells and Whistles: Changing Gender</h2>
+    <p>Below we have the average Burmese woman. We can define correspondences on her face, then warp a male face to this shape in order to see the effects. Below is an example with Kenny, first warping the shape alone, then also averaging the pixel values.</p>
+    <div class="gallery">
+        <div class="gallery-item">
+            <img src="proj3_data/myanmar_avg.jpg">
+            <p>Average Burmese woman</p>
+        </div>
+    </div>
+
+
+
 
     <h1>Project 2: Fun with Filters and Frequencies</h1>
     <p>In this project, we used filter convolutions to create various effects, including blurring, sharpening, edge detection, low/high frequency extraction, hybrid images, and blended images.</p>
