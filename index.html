@@ -43,7 +43,7 @@
     <h1>Project 3: Face Morphing and Modeling a Photo Collection</h1>
     <p>In this project, we used the concept of transformations in geometric space, specifically affine transformations of images, to compute variations on image pairs, including midway hybrids of two faces, morph animations, mean faces of a population, and caricatures.</p>
     <h2>Defining Correspondences</h2>
-    <p>In order to "move" an image to another image, we first need to define the triangles which segment the image into its key features. By selecting points corresponding to each other in each image, we can then triangulate between these points, using Delauney triangulation. The result on the average of the two point sets is the below triangulation, which vaguely captures the facial details. We can also see the triangulation on a face. Note that the corners must also be selected to triangulate the background as well.</p>
+    <p>In order to "move" an image to another image, we first need to define the triangles which segment the image into its key features. By selecting points corresponding to each other in each image, we can then triangulate between these points, in this case 37 points, using Delaunay triangulation. The result on the average of the two point sets is the below triangulation, which vaguely captures the facial details. We can also see the triangulation on a face. Note that the corners must also be selected to triangulate the background as well.</p>
     <div class="gallery">
         <div class="gallery-item">
             <img src="proj3_data/triangles.png">
@@ -55,7 +55,7 @@
     </div>
 
     <h2>Computing the "Mid-way Face"</h2>
-    <p>Using the triangles of the mean points from above, we can find the "mean shape" of the two images. This is helpful in defining a concrete set of triangles that match up in both images. Then, for each image, and for each triangle in the image, we can compute the inverse of the affine transformation matrix that maps points in the original image to the halfway face triangle. We can get the points in each triangle using a polygon mask, then multiplying the halfway points by the inverse affine matrix to get the corresponding points in the original image. Since values may not fall on an exact pixel, we use scikit-image's interpolation griddata function to correct assign the data to integer positions. Once each image has pixels filled in on the halfway image, we can then average the two morphed images to get the "mean face" below.</p>
+    <p>Using the triangles of the mean points from above, we can find the "mean shape" of the two images, which is just the pointwise mean of the two point sets. This is helpful in defining a concrete set of triangles that match up in both images. Then, for each image, and for each triangle in the image, we can compute the inverse of the affine transformation matrix that maps points in the original image to the halfway face triangle. We can get the points in each triangle using a polygon mask, then multiplying the halfway points by the inverse affine matrix to get the corresponding points in the original image. Since values may not fall on an exact pixel, we use scikit-image's interpolation griddata function to correct assign the data to integer positions. Once each image has pixels filled in on the halfway image, we can then average the two morphed images to get the "mean face" below.</p>
     <div class="gallery">
         <div class="gallery-item">
             <img src="proj3_data/grant_pic.jpg">
@@ -80,7 +80,7 @@
     </div>
 
     <h2>The "mean face" of a population</h2>
-    <p>We can visualize what the average member of a population looks like by averaging the pixel values of images of the members. However, in order to ensure the facial features align correctly, we first morph each member to the "average shape" of the population determined by the average of the facial key points, then take the pixelwise mean over all the images. The result below shows the average face of the FEI database, part 1, as well as some of the intermediate results of members warped to the average shape.</p>
+    <p>We can visualize what the average member of a population looks like by averaging the pixel values of images of the members. However, in order to ensure the facial features align correctly, we first morph each member to the "average shape" of the population determined by the average of the facial key points, then take the pixelwise mean over all the images. The result below shows the average face of the FEI database, part 1, as well as some of the intermediate results of members warped to the average shape. The dataset came with predefined facial key points, for which it was necessary to match the corresponding points on new images.</p>
     <div class="gallery">
         <div class="gallery-item">
             <img src="proj3_data/33.jpg">
@@ -99,7 +99,7 @@
             <p>Mean face</p>
         </div>
     </div>
-    <p>With this mean face, we can also experiment by warping into the mean shape, as well as warping the mean face into our own shape.</p>
+    <p>With this mean face, we can also experiment by warping into the mean shape, as well as warping the mean face into my own shape. Due to inconsistencies in key point selection, the results are not exactly similar to the population mean, or vice versa.</p>
     <div class="gallery">
         <div class="gallery-item">
             <img src="proj3_data/grant_to_avg.jpg">
@@ -112,7 +112,7 @@
     </div>
 
     <h2>Caricatures: Extrapolating from the mean</h2>
-    <p>Another fun experiment we can do with face warping is to exaggerate the differences between one's own face and the population mean face. Specifically, we can add the difference (self - mean) * some alpha factor, then add it back to one's own points as the destination shape, which results in the differences between oneself and the mean to become cartoonishly large.</p>
+    <p>Another fun experiment we can do with face warping is to exaggerate the differences between one's own face and the population mean face. Specifically, we can add the difference (self - mean) * some alpha factor, then add it back to one's own points as the destination shape, which results in the differences between oneself and the mean to become cartoonishly large. This is the same effect as choosing an morph value which is out of [0, 1] when warping, effectively shooting past the target image.</p>
     <div class="gallery">
         <div class="gallery-item">
             <img src="proj3_data/grant_caricature.jpg">
@@ -120,7 +120,7 @@
     </div>
 
     <h2>Bells and Whistles: Changing Ethnicity</h2>
-    <p>Below we have the average Burmese person. We can define correspondences on the face, then warp a face to this shape in order to see the effects. Below is an example with Kenny, first warping the shape alone, then also averaging the pixel values.</p>
+    <p>We can also try and experiment with changing ethnicities using the average face tones and shape of the ethnic population. Below we have the average Burmese person. We can define correspondences on the face, then warp a face to this shape and appearance in order to see the effects. Below is an example with Kenny, first warping the shape alone, then the appearance, then also averaging the pixel values for a combined effect.</p>
     <div class="gallery">
         <div class="gallery-item">
             <img src="proj3_data/myanmar_avg.jpg">
