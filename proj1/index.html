@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .gallery-item {
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+        }
+        .gallery-item p {
+            padding: 15px;
+            text-align: center;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Project 1: Colorizing the Prokudin-Gorskii photo collection</h1>
+<p>In this project, we created algorithms to transform the Prokudin-Gorskii glass plate negatives taken of various images in separate R, G, and B channels to color images. The basic algorithm involves cutting the image into thirds, then iterating over various offsets of the image to compare alignment similarity scores, then upscaling the resolution to search again with more precision.
+</p>
+<p>An example glass plate image, of a cathedral in its three channels:</p>
+<img src="proj1_data/cathedral.jpg" alt="Cathedral Glass Plate" style="display: block; margin: 0 auto; width: 10%; height: auto;">
+<p>First, the images are split into thirds, and designated as RGB sections. Each of these are cropped together, to remove whitespace and borders. Then, the images are processed in pairs: red and blue are both aligned with green, as each image is downscaled to reduce pixel count, and repeatedly aligned using a similarity score of Normalized Cross-Correlation, in a loop while upscaled until the original resolution is reached. Then the three aligned images are overlaid to form a color image. The pixel amounts shifted in the red and blue images are shown below.</p>
+<p>The processed images:</p>
+<div class="gallery">
+    <div class="gallery-item">
+        <img src="proj1_data/cathedral_processed.jpg" alt="Cathedral Processed">
+        <p>Red shift: (1, 1)</p>
+        <p>Blue shift: (2, 0)</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj1_data/church_processed.jpg" alt="Church Processed">
+        <p>Red shift: (0, 0)</p>
+        <p>Blue shift: (32, 11)</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj1_data/emir_processed.jpg" alt="Emir Processed">
+        <p>Red shift: (-8, 16)</p>
+        <p>Blue shift: (25, -21)</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj1_data/harvesters_processed.jpg" alt="Harvesters Processed">
+        <p>Red shift: (12, -3)</p>
+        <p>Blue shift: (-6, -11)</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj1_data/icon_processed.jpg" alt="Icon Processed">
+        <p>Red shift: (11, 5)</p>
+        <p>Blue shift: (-5, -17)</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj1_data/lady_processed.jpg" alt="Lady Processed">
+        <p>Red shift: (-2, -4)</p>
+        <p>Blue shift: (0, 1)</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj1_data/melons_processed.jpg" alt="Melons Processed">
+        <p>Red shift: (11, 4)</p>
+        <p>Blue shift: (0, -4)</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj1_data/monastery_processed.jpg" alt="Monastery Processed">
+        <p>Red shift: (-1, 0)</p>
+        <p>Blue shift: (10, 0)</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj1_data/onion_church_processed.jpg" alt="Onion Church Processed">
+        <p>Red shift: (-6, 10)</p>
+        <p>Blue shift: (10, -24)</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj1_data/sculpture_processed.jpg" alt="Sculpture Processed">
+        <p>Red shift: (37, -16)</p>
+        <p>Blue shift: (37, 11)</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj1_data/self_portrait_processed.jpg" alt="Self Portrait Processed">
+        <p>Red shift: (15, 8)</p>
+        <p>Blue shift: (31, 1)</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj1_data/three_generations_processed.jpg" alt="Three Generations Processed">
+        <p>Red shift: (-7, 0)</p>
+        <p>Blue shift: (12, -5)</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj1_data/tobolsk_processed.jpg" alt="Tobolsk Processed">
+        <p>Red shift: (0, 1)</p>
+        <p>Blue shift: (1, -2)</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj1_data/train_processed.jpg" alt="Train Processed">
+        <p>Red shift: (-8, 24)</p>
+        <p>Blue shift: (8, 2)</p>
+    </div>
+</div>
+
+</body>
+</html>
