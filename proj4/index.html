@@ -68,6 +68,22 @@
     </div>
 </div>
 
+<h2>Warp the Images</h2>
+<p>With the homography matrix defined between the pairs of images, we can then warp one image to the points the other. We first calculate the bounding box of the new image by multiplying the homography matrix with the corners of the original image, to avoid cutting off any values. We can then define the output polygon using sk.draw and the warped corners, then applying the inverse of the homography matrix to the polygon points to get the original points, whose values are assigned to the corresponding warped points, after interpolating to integer indices.</p>
+
+<h2>Image Rectification</h2>
+<p>An example of the above warping process can be seen through rectification, adjusting a surface which is not orthogonal to the camera so that it appears to be so. We do this by selecting the boundaries of the surface, like the four corners of a rectangle, and warping them to rectangular points in a new canvas. Below is an example using a picture of a microwave.</p>
+<div class="gallery">
+    <div class="gallery-item">
+        <img src="proj4_data/microwave.jpg">
+    </div>
+    <div class="gallery-item">
+        <img src="proj4_data/microwave_warped.jpg">
+    </div>
+</div>
+
+<h2>Blend the images into a mosaic</h2>
+<p></p>
 
 </body>
 </html>
