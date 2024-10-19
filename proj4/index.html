@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .gallery-item {
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+        }
+        .gallery-item p {
+            padding: 15px;
+            text-align: center;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Project 4: [Auto]Stitching Photo Mosaics</h1>
+<p>In this project, we use homography transformations on separate images from the same camera viewer to warp and stitch together images into a panorama/mosaic.</p>
+<h2>Shoot the Pictures</h2>
+<p>When gathering the images, the observer/camera needs to stay in the same position the entire time, while only rotating about the center axis. In this part, it is important that the images have significant overlapping features, in order to later define correspondences between pairs of images. Not having enough correspondences can lead to numerical instability. Below are three images of Dwinelle Hall captured at three different angles.</p>
+<div class="gallery">
+    <div class="gallery-item">
+        <img src="proj4_data/dwinelle_l.jpg">
+    </div>
+    <div class="gallery-item">
+        <img src="proj4_data/dwinelle_m.jpg">
+    </div>
+    <div class="gallery-item">
+        <img src="proj4_data/dwinelle_r.jpg">
+    </div>
+</div>
+
+<h2>Recover Homographies</h2>
+<p>Next, in order to define a transformation matrix from points in the original image to the warped image of the new perspective, we set up a system of equations in homogenous coordinates. We stack the correspondence points in a tall matrix, which results in an overdetermined least squares problem solving for the parameters of the homography matrix, which can then be reshaped to 3x3. Below are the defined correspondence points on the left and middle images.</p>
+<div class="gallery">
+    <div class="gallery-item">
+        <img src="proj4_data/dwinelle_l_points.png">
+    </div>
+    <div class="gallery-item">
+        <img src="proj4_data/dwinelle_m_points.png">
+    </div>
+</div>
+
+
+</body>
+</html>
