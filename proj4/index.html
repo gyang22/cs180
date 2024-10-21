@@ -44,7 +44,7 @@
 <h1>Project 4: [Auto]Stitching Photo Mosaics</h1>
 <p>In this project, we use homography transformations on separate images from the same camera viewer to warp and stitch together images into a panorama/mosaic.</p>
 <h2>Shoot the Pictures</h2>
-<p>When gathering the images, the observer/camera needs to stay in the same position the entire time, while only rotating about the center axis. In this part, it is important that the images have significant overlapping features, in order to later define correspondences between pairs of images. Not having enough correspondences can lead to numerical instability. Below are three images of Dwinelle Hall captured at three different angles.</p>
+<p>When gathering the images, the observer/camera needs to stay in the same position the entire time, while only rotating about the center axis. In this part, it is important that the images have significant overlapping features, in order to later define correspondences between pairs of images. Not having enough correspondences can lead to numerical instability. Below are images of Dwinelle Hall captured at two different angles.</p>
 <div class="gallery">
     <div class="gallery-item">
         <img src="proj4_data/dwinelle_l.jpg">
@@ -52,13 +52,10 @@
     <div class="gallery-item">
         <img src="proj4_data/dwinelle_m.jpg">
     </div>
-    <div class="gallery-item">
-        <img src="proj4_data/dwinelle_r.jpg">
-    </div>
 </div>
 
 <h2>Recover Homographies</h2>
-<p>Next, in order to define a transformation matrix from points in the original image to the warped image of the new perspective, we set up a system of equations in homogenous coordinates. We stack the correspondence points in a tall matrix, which results in an overdetermined least squares problem solving for the parameters of the homography matrix, which can then be reshaped to 3x3. Below are the defined correspondence points on the left and middle images.</p>
+<p>Next, in order to define a transformation matrix from points in the original image to the warped image of the new perspective, we set up a system of equations in homogenous coordinates. We stack the correspondence points in a tall matrix, which results in an overdetermined least squares problem solving for the parameters of the homography matrix, which can then be reshaped to 3x3. Below are the defined correspondence points on the Dwinelle images.</p>
 <div class="gallery">
     <div class="gallery-item">
         <img src="proj4_data/dwinelle_l_points.png">
@@ -89,7 +86,7 @@
 </div>
 
 <h2>Blend the images into a mosaic</h2>
-<p>Now using the three Dwinelle images, we warp both left and right images to the correspondences defined for each in the middle image. After warping, we get the below images.</p>
+<p>Now using the Dwinelle images, we warp one image to the correspondences defined in the other. After warping, we get the below images.</p>
 <div class="gallery">
     <div class="gallery-item">
         <img src="proj4_data/dwinelle_left_warped.jpg">
@@ -97,10 +94,35 @@
     <div class="gallery-item">
         <img src="proj4_data/dwinelle_m.jpg">
     </div>
+</div>
+<p>Then, in order to combine them, we align the images along the correspondence points and do a two-level Laplacian stack, blending the low level frequencies using a distance transform mask on each image, where the value of the mask is the ratio of the distance to the nearest edge. The high frequencies are selected based on whichever distance transform mask value is larger between the two. The low and high frequencies are then merged back together, to get the final seamless result.</p>
+<div class="gallery">
     <div class="gallery-item">
-        <img src="proj4_data/dwinelle_right_warped.jpg">
+        <img src="proj4_data/dwinelle_combined.jpg">
     </div>
 </div>
-
+<p>Below are two other results:</p>
+<div class="gallery">
+    <div class="gallery-item">
+        <img src="proj4_data/entrance_left.jpg">
+    </div>
+    <div class="gallery-item">
+        <img src="proj4_data/entrance_right.jpg">
+    </div>
+    <div class="gallery-item">
+        <img src="proj4_data/entrance_combined.jpg">
+    </div>
+</div>
+<div class="gallery">
+    <div class="gallery-item">
+        <img src="proj4_data/construction_left.jpg">
+    </div>
+    <div class="gallery-item">
+        <img src="proj4_data/construction_right.jpg">
+    </div>
+    <div class="gallery-item">
+        <img src="proj4_data/construction_combined.jpg">
+    </div>
+</div>
 </body>
 </html>
