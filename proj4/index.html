@@ -44,7 +44,7 @@
 <h1>Project 4: [Auto]Stitching Photo Mosaics</h1>
 <p>In this project, we use homography transformations on separate images from the same camera viewer to warp and stitch together images into a panorama/mosaic.</p>
 <h2>Shoot the Pictures</h2>
-<p>When gathering the images, the observer/camera needs to stay in the same position the entire time, while only rotating about the center axis (fixing the center of projection). This ensures that the transformations in the next step are projective. In this part, it is important that the images have significant overlapping features, in order to later define correspondences between pairs of images. Not having enough correspondences can lead to numerical instability. Below are images of Dwinelle Hall captured at two different angles.</p>
+<p>The images for this project were shot on an iPhone on campus. When gathering the images, the observer/camera needs to stay in the same position the entire time, while only rotating about the center axis (fixing the center of projection). This ensures that the transformations in the next step are projective. In this part, it is important that the images have significant overlapping features, in order to later define correspondences between pairs of images. Not having enough correspondences can lead to numerical instability. Below are images of Dwinelle Hall captured at two different angles.</p>
 <div class="gallery">
     <div class="gallery-item">
         <img src="proj4_data/dwinelle_l.jpg">
@@ -98,7 +98,7 @@
         <img src="proj4_data/dist.png">
     </div>
 </div>
-<p>Then, in order to combine them, we align the images along the correspondence points and create a two-level Laplacian stack, blending the low level frequencies using a distance transform mask as the weights on each image in a linear combination, where the value of the mask is the ratio of the distance to the nearest edge. The high frequencies are selected based on whichever distance transform mask value is larger between the two. The low and high frequencies are then merged back together, to get the final seamless result.</p>
+<p>We then allocate a final canvas size as big as necessary to contain the overlapped images. Then, in order to combine them, we align the images along the correspondence points and create a two-level Laplacian stack, blurring for the low frequencies and subtracting the blur from the original to get the high frequencies. We can then blend the low level frequencies using a distance transform mask as the weights on each image in a linear combination, where the value of the mask is the ratio of the distance to the nearest edge. The high frequencies are selected based on whichever distance transform mask value is larger between the two. The low and high frequencies are then merged back together, to get the final seamless result.</p>
 <div style="display: flex;
 justify-content: center;
 align-items: center;">
