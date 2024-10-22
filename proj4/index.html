@@ -44,7 +44,7 @@
 <h1>Project 4: [Auto]Stitching Photo Mosaics</h1>
 <p>In this project, we use homography transformations on separate images from the same camera viewer to warp and stitch together images into a panorama/mosaic.</p>
 <h2>Shoot the Pictures</h2>
-<p>When gathering the images, the observer/camera needs to stay in the same position the entire time, while only rotating about the center axis. In this part, it is important that the images have significant overlapping features, in order to later define correspondences between pairs of images. Not having enough correspondences can lead to numerical instability. Below are images of Dwinelle Hall captured at two different angles.</p>
+<p>When gathering the images, the observer/camera needs to stay in the same position the entire time, while only rotating about the center axis (fixing the center of projection). This ensures that the transformations in the next step are projective. In this part, it is important that the images have significant overlapping features, in order to later define correspondences between pairs of images. Not having enough correspondences can lead to numerical instability. Below are images of Dwinelle Hall captured at two different angles.</p>
 <div class="gallery">
     <div class="gallery-item">
         <img src="proj4_data/dwinelle_l.jpg">
@@ -55,7 +55,7 @@
 </div>
 
 <h2>Recover Homographies</h2>
-<p>Next, in order to define a transformation matrix from points in the original image to the warped image of the new perspective, we set up a system of equations in homogenous coordinates. We stack the correspondence points in a tall matrix, which results in an overdetermined least squares problem solving for the parameters of the homography matrix, which can then be reshaped to 3x3. Below are the defined correspondence points on the Dwinelle images.</p>
+<p>Next, in order to define a transformation matrix from points in the original image to the warped image of the new perspective, we set up a system of equations in homogenous coordinates. The goal is to find the homography transformation matrix determined by the correspondence points. We stack the points in a tall matrix, which results in an overdetermined least squares problem solving for the parameters of the homography matrix, which can then be reshaped to 3x3. This matrix has 8 parameters or degrees of freedom, (lower left being a scaling factor), so at least 4 pairs of (x, y) points are required to make the system solveable. As this is based on human-defined correspondences, the overdetermined system is necessary to help combat noise from slightly off selections. Below are the defined correspondence points on the Dwinelle images.</p>
 <div class="gallery">
     <div class="gallery-item">
         <img src="proj4_data/dwinelle_l_points.png">
@@ -66,10 +66,10 @@
 </div>
 
 <h2>Warp the Images</h2>
-<p>With the homography matrix defined between the pairs of images, we can then warp one image to the points the other. We first calculate the bounding box of the new image by multiplying the homography matrix with the corners of the original image, to avoid cutting off any values. We can then define the output polygon using sk.draw and the warped corners, then applying the inverse of the homography matrix to the polygon points to get the original points, whose values are assigned to the corresponding warped points, after interpolating to integer indices.</p>
+<p>With the homography matrix defined between the pairs of images, we can then warp one image to the points in the other. We first calculate the bounding box of the new image by multiplying the homography matrix with the corners of the original image, to avoid cutting off any values. We can then define the output polygon using sk.draw and the warped corners, then applying the inverse of the homography matrix to the polygon points to get the original points, whose values are assigned to the corresponding warped points, after interpolating to integer indices. We can vectorize the operations by taking advantage of matrix multiplication properties and the global nature of the transformation to multiply every point by the matrix at once.</p>
 
 <h2>Image Rectification</h2>
-<p>An example of the above warping process can be seen through rectification, adjusting a surface which is not orthogonal to the camera so that it appears to be so. We do this by selecting the boundaries of the surface, like the four corners of a rectangle, and warping them to rectangular points in a new canvas. Below is an example using a picture of a microwave, as well as a desk setup.</p>
+<p>An example of the above warping process can be seen through rectification, adjusting a surface which is not orthogonal to the camera so that it appears to be so. We do this by selecting the boundaries of the surface, like the four corners of a monitor or microwave, and warping them to perfectly rectangular points in a new canvas. Below is an example using a picture of a microwave, as well as a desk setup. Since the surfaces are not actually facing the camera, the images can become stretched at the boundaries to an extreme degree in order to preserve the illusion.</p>
 <div class="gallery">
     <div class="gallery-item">
         <img src="proj4_data/microwave.jpg">
@@ -86,7 +86,7 @@
 </div>
 
 <h2>Blend the images into a mosaic</h2>
-<p>Now using the Dwinelle images, we warp one image to the correspondences defined in the other. After warping, we get the below images.</p>
+<p>Now using the Dwinelle images, we first warp one image to the correspondences defined in the other. After warping the left image, we get the below results. An example of a distance transform is also shown, which is used as a blending mask in the next step.</p>
 <div class="gallery">
     <div class="gallery-item">
         <img src="proj4_data/dwinelle_left_warped.jpg">
@@ -94,8 +94,11 @@
     <div class="gallery-item">
         <img src="proj4_data/dwinelle_m.jpg">
     </div>
+    <div class="gallery-item">
+        <img src="proj4_data/dist.png">
+    </div>
 </div>
-<p>Then, in order to combine them, we align the images along the correspondence points and do a two-level Laplacian stack, blending the low level frequencies using a distance transform mask on each image, where the value of the mask is the ratio of the distance to the nearest edge. The high frequencies are selected based on whichever distance transform mask value is larger between the two. The low and high frequencies are then merged back together, to get the final seamless result.</p>
+<p>Then, in order to combine them, we align the images along the correspondence points and create a two-level Laplacian stack, blending the low level frequencies using a distance transform mask as the weights on each image in a linear combination, where the value of the mask is the ratio of the distance to the nearest edge. The high frequencies are selected based on whichever distance transform mask value is larger between the two. The low and high frequencies are then merged back together, to get the final seamless result.</p>
 <div style="flex: auto; margin: auto;">
     <img src="proj4_data/dwinelle_combined.jpg" style="width: 50%; height: auto; margin: auto;">
 </div>
