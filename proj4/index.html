@@ -42,6 +42,7 @@
 <body>
 
 <h1>Project 4: [Auto]Stitching Photo Mosaics</h1>
+<h2>Part A:</h2>
 <p>In this project, we use homography transformations on separate images from the same camera viewer to warp and stitch together images into a panorama/mosaic.</p>
 <h2>Shoot the Pictures</h2>
 <p>The images for this project were shot on an iPhone on campus. When gathering the images, the observer/camera needs to stay in the same position the entire time, while only rotating about the center axis (fixing the center of projection). This ensures that the transformations in the next step are projective. In this part, it is important that the images have significant overlapping features, in order to later define correspondences between pairs of images. Not having enough correspondences can lead to numerical instability. Below are images of Dwinelle Hall captured at two different angles.</p>
@@ -129,5 +130,59 @@ align-items: center;">
     </div>
 </div>
 <p>Note that tiny imperfections in the image blending likely results from human error, either in selecting the correspondence points (a tiny shift can result in a large warping effect) or accidentally moving the camera too much translationally. Especially when the subject is close to the camera, this translational error can have a large effect.</p>
+
+<h2>Part B:</h2>
+<p>In this next section, we implemented feature detection and matching algorithms in order to automatically do the point selection and warping processes, to generate automated panoramas. In this section we will use the same three sets of images to compare and contrast results. Note that the images have been downscaled by 2x in order to help computational time.</p>
+<h2>Harris Interest Point Detector</h2>
+<p>Instead of manually selecting points of interest in the images, we can identify points with good characteristics for being recognizable between the two image, namely "corner" points where edges are distinguishable. We used the Harris detector which takes the peak local maximum over the Harris response matrix to identify corner points. The result can be seen below for a sigma and min distance of 7.</p>
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="proj4_data/dwinelle_harris_corners.png" style="width: 40%; height: auto; margin: auto;">
+</div>
+
+<h2>Adaptive Non-Maximal Suppression</h2>
+<p>As seen in the previous image, the corner detection algorithm can generate too many dense points, depending on the parameters used. In order to filter our points for the most useful ones, we can use Adaptive Non-Maximal Suppression (ANMS) to select for the maximum radius around any point where it has a stronger strength than the neighboring points, and in each section of neighboring points, the largest corner strengths are kept until having reached the desired points count. The below image shows the top 250 points selected using ANMS.</p>
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="proj4_data/dwinelle_m_anms_points.png" style="width: 40%; height: auto; margin: auto;">
+</div>
+
+<h2>Feature Descriptor Extraction</h2>
+
+<h2>Feature Matching</h2>
+
+<h2>RANSAC</h2>
+<p>To further improve our point selections for the eventual homography calculation, we can do a little looking ahead: by randomly selecting 4 points from each image and computing a homography, we can then warp points to compare their warped values to their actual values in the other image. By randomly sampling many times, we can hope to eventually find a set of points which do form a valid and optimal homography. These "inliers" are selected if they meet a chosen threshold, then the set with the largest number of inliers is kept at the end. Below is the RANSAC result on the same image.</p>
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="proj4_data/dwinelle_ransac_matches.png" style="width: 40%; height: auto; margin: auto;">
+</div>
+
+<h2>Results</h2>
+<p>The left results are the manual results (copied from above) and the right is the automatic stitching.</p>
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="proj4_data/dwinelle_combined.jpg" style="width: 40%; height: auto; margin: auto;">
+    <img src="proj4_data/dwinelle_auto_combined.jpg" style="width: 40%; height: auto; margin: auto;">
+</div>
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="proj4_data/entrance_combined.jpg" style="width: 40%; height: auto; margin: auto;">
+    <img src="proj4_data/entrance_auto_combined.jpg" style="width: 40%; height: auto; margin: auto;">
+</div>
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="proj4_data/construction_combined.jpg" style="width: 40%; height: auto; margin: auto;">
+    <img src="proj4_data/construction_auto_combined.jpg" style="width: 40%; height: auto; margin: auto;">
+</div>
+
+
+<p>The coolest thing I have learned from this project is definitely the entire automatic selection process. At first it seems like the choice of correspondence points is more artistic than algorithmic, yet certain qualities like "corners" can be selected for, in a much less painstaking way than by hand.</p>
 </body>
 </html>
