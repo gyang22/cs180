@@ -152,6 +152,12 @@ align-items: center;">
 <h2>Feature Descriptor Extraction</h2>
 
 <h2>Feature Matching</h2>
+<p>With individual features, we now want to relate them across the images, or match them based on their descriptors. We can compute the pairwise error differences between each set of points, then use Lowe's thresholding, where the ratio of the best result to the second best result is thresholded, assuming that the correct match is much better than any others. After matching the points, we get this result:</p>
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="proj4_data/dwinelle_matches.png" style="width: 70%; height: auto; margin: auto;">
+</div>
 
 <h2>RANSAC</h2>
 <p>To further improve our point selections for the eventual homography calculation, we can do a little looking ahead: by randomly selecting 4 points from each image and computing a homography, we can then warp points to compare their warped values to their actual values in the other image. By randomly sampling many times, we can hope to eventually find a set of points which do form a valid and optimal homography. These "inliers" are selected if they meet a chosen threshold, then the set with the largest number of inliers is kept at the end. Below is the RANSAC result on the same image.</p>
