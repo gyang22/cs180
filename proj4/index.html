@@ -159,19 +159,14 @@ align-items: center;">
 
 <h2>Feature Descriptor Extraction</h2>
 <p>After getting a good number of candidate points, we can then extract features for each point to use for comparisons to others. We sample 40x40 patches from the image centered on the corner points, downsample to 8x8 size, then normalize for zero mean and unit variance. By doing so, we can observe the relative similarity/difference of the features. Some examples of these patches are shown below. (upscaled to see detail)</p>
-<div class="gallery">
-    <div class="gallery-item-small">
-        <img src="proj4_data/descriptor_0.jpg">
-    </div>
-    <div class="gallery-item-small">
-        <img src="proj4_data/descriptor_1.jpg">
-    </div>
-    <div class="gallery-item-small">
-        <img src="proj4_data/descriptor_2.jpg">
-    </div>
-    <div class="gallery-item-small">
-        <img src="proj4_data/descriptor_3.jpg">
-    </div>
+
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="proj4_data/descriptor_0.jpg" style="width: 10%; height: auto; margin: auto;">
+    <img src="proj4_data/descriptor_1.jpg" style="width: 10%; height: auto; margin: auto;">
+    <img src="proj4_data/descriptor_2.jpg" style="width: 10%; height: auto; margin: auto;">
+    <img src="proj4_data/descriptor_3.jpg" style="width: 10%; height: auto; margin: auto;">
 </div>
 
 <h2>Feature Matching</h2>
