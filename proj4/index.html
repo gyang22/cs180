@@ -150,6 +150,21 @@ align-items: center;">
 </div>
 
 <h2>Feature Descriptor Extraction</h2>
+<p>After getting a good number of candidate points, we can then extract features for each point to use for comparisons to others. We sample 40x40 patches from the image centered on the corner points, downsample to 8x8 size, then normalize for zero mean and unit variance. By doing so, we can observe the relative similarity/difference of the features. Some examples of these patches are shown below.</p>
+<div class="gallery">
+    <div class="gallery-item">
+        <img src="proj4_data/descriptor_0.jpg">
+    </div>
+    <div class="gallery-item">
+        <img src="proj4_data/descriptor_1.jpg">
+    </div>
+    <div class="gallery-item">
+        <img src="proj4_data/descriptor_2.jpg">
+    </div>
+    <div class="gallery-item">
+        <img src="proj4_data/descriptor_3.jpg">
+    </div>
+</div>
 
 <h2>Feature Matching</h2>
 <p>With individual features, we now want to relate them across the images, or match them based on their descriptors. We can compute the pairwise error differences between each set of points, then use Lowe's thresholding, where the ratio of the best result to the second best result is thresholded, assuming that the correct match is much better than any others. After matching the points, we get this result:</p>
@@ -160,7 +175,7 @@ align-items: center;">
 </div>
 
 <h2>RANSAC</h2>
-<p>To further improve our point selections for the eventual homography calculation, we can do a little looking ahead: by randomly selecting 4 points from each image and computing a homography, we can then warp points to compare their warped values to their actual values in the other image. By randomly sampling many times, we can hope to eventually find a set of points which do form a valid and optimal homography. These "inliers" are selected if they meet a chosen threshold, then the set with the largest number of inliers is kept at the end. Below is the RANSAC result on the same image.</p>
+<p>As we can see above, there are still many incorrect matches, so we have to refine our selections further. To further improve our point selections for the eventual homography calculation, we can do a little looking ahead: by randomly selecting 4 points from each image and computing a homography, we can then warp points to compare their warped values to their actual values in the other image. By randomly sampling many times, we can hope to eventually find a set of points which do form a valid and optimal homography. These "inliers" are selected if they meet a chosen threshold, then the set with the largest number of inliers is kept at the end. Below is the RANSAC result on the same image.</p>
 <div style="display: flex;
 justify-content: center;
 align-items: center;">
