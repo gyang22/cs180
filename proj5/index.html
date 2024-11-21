@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .gallery-item {
+            width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .gallery-item-small {
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+        }
+        .gallery-item p {
+            padding: 15px;
+            text-align: center;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Project 5: Fun With Diffusion Models</h1>
+<h2>Part A: The Power of Diffusion Models</h2>
+
+<p>In this project, we explore the implementation and application of diffusion models in denoising images, which can be used to sample "novel" images from pure noise and generate cool artwork/visual anagrams.</p>
+
+<h2>Implementing the Forward Process</h2>
+<p>First, we need a way to add noise to clean images at different levels. We implement a function that adds scaled Gaussian noise to images, and show the results at levels 0 (no noise), 250, 500, and 750.</p>
+<div class="gallery">
+    <div class="gallery-item">
+        <img src="proj5/proj5_data/test_im.jpg">
+        <p>0</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5/proj5_data/test_im_250.jpg">
+        <p>250</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5/proj5_data/test_im_500.jpg">
+        <p>500</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5/proj5_data/test_im_750.jpg">
+        <p>750</p>
+    </div>
+</div>
+
+<h2>Part B: Diffusion Models from Scratch</h2>
+
+</body>
+</html>
