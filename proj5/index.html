@@ -29,7 +29,7 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         .gallery-item-small {
-            width: 200px;
+            width: 300px;
             border: 1px solid #ccc;
             border-radius: 5px;
             overflow: hidden;
@@ -74,19 +74,19 @@
 <h2>Implementing the Forward Process</h2>
 <p>First, we need a way to add noise to clean images at different levels. We implement a function that adds scaled Gaussian noise to images, and show the results at levels 0 (no noise), 250, 500, and 750.</p>
 <div class="gallery">
-    <div class="gallery-item">
+    <div class="gallery-item-small">
         <img src="proj5_data/test_im.jpg">
         <p>0</p>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item-small">
         <img src="proj5_data/test_im_250.jpg">
         <p>250</p>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item-small">
         <img src="proj5_data/test_im_500.jpg">
         <p>500</p>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item-small">
         <img src="proj5_data/test_im_750.jpg">
         <p>750</p>
     </div>
@@ -95,17 +95,17 @@
 <h2>Classical Denoising</h2>
 <p>We can first try simple methods for denoising, such as Gaussian blur filtering to see the results. Using a kernel size of 5 and sigma of 2, we obtain the lackluster results of the blurred/denoised images:</p>
 <div class="gallery">
-    <div class="gallery-item-small">
+    <div class="gallery-item">
         <img src="proj5_data/test_im_250.jpg">
         <img src="proj5_data/blur_test_250.jpg">
         <p>250</p>
     </div>
-    <div class="gallery-item-small">
+    <div class="gallery-item">
         <img src="proj5_data/test_im_500.jpg">
         <img src="proj5_data/blur_test_500.jpg">
         <p>500</p>
     </div>
-    <div class="gallery-item-small">
+    <div class="gallery-item">
         <img src="proj5_data/test_im_750.jpg">
         <img src="proj5_data/blur_test_750.jpg">
         <p>750</p>
@@ -116,24 +116,25 @@
 <h2>One-Step Denoising</h2>
 <p>We can improve this performance by using a diffusion model to predict the noise in the image. In this section, we use a pretrained model for simplicity, to which we can feed the noisy image and get a noise estimate as an output, then scale this noise by the inverse factor we multiplied by in the original forward step. The results for model-predicted denoising is shown for the three levels:</p>
 <div class="gallery">
-    <div class="gallery-item-small">
+    <div class="gallery-item">
         <img src="proj5_data/test_im_250.jpg">
         <img src="proj5_data/one_step_250.png">
         <p>250</p>
     </div>
-    <div class="gallery-item-small">
+    <div class="gallery-item">
         <img src="proj5_data/test_im_500.jpg">
         <img src="proj5_data/one_step_500.png">
         <p>500</p>
     </div>
-    <div class="gallery-item-small">
+    <div class="gallery-item">
         <img src="proj5_data/test_im_750.jpg">
         <img src="proj5_data/one_step_750.png">
         <p>750</p>
     </div>
 </div>
 
-
+<h2>Iterative Denoising</h2>
+<p></p>
 
 
 <h2>Part B: Diffusion Models from Scratch</h2>
