@@ -81,6 +81,7 @@
 
 <h2>Testing Prompts</h2>
 <p>We use a pretrained model called DeepFloyd to save compute, which is originally intended for text-to-image use. We get around this by using a "null" prompt of "a high quality photo" which serves as a general prompt, but here we also display some of the pretrained text to image capabilities:</p>
+<p>Throughout the notebook used to run the code, we use seed = 180 for reproducibility.</p>
 <div class="image-row">
     <div class="image-container">
         <img src="proj5_data/snowy.png">
@@ -92,6 +93,22 @@
     </div>
     <div class="image-container">
         <img src="proj5_data/rocket.png">
+        <div class="image-caption">Prompt: a rocket ship</div>
+    </div>
+</div>
+<p>One factor influencing the quality and clarity of the generated images is the prompting itself, as a simple prompt like "a rocket ship" is much less detailed than the more complex prompt "an oil painting of a snowy mountain village".</p>
+<p>These images were generated using num_inference steps of 20, but if we increase this number to 200 on both stage outputs, the model generates higher quality images at the expense of running the diffusion process for longer on the initial images:</p>
+<div class="image-row">
+    <div class="image-container">
+        <img src="proj5_data/snowy2.png">
+        <div class="image-caption">Prompt: an oil painting of a snowy mountain village</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/man2.png">
+        <div class="image-caption">Prompt: a man wearing a hat</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/rocketship2.png">
         <div class="image-caption">Prompt: a rocket ship</div>
     </div>
 </div>
