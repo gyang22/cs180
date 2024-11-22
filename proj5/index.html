@@ -137,45 +137,65 @@
 <p>In order to improve our performance, we can instead iteratively denoise the image by iterating on our timesteps, and slowly subtracting the predicted noise at each level. The formula involves the noise scaling factor we originally noised the image with, then we attempt to predict the next cleaner step of the image by getting the model's estimate, then subtracting a scaled version of it from the blurry image, then add back some additional noise to aid in our "search" for the optimal image. Once we reach the final timestep, we have found our clean image, or our best estimate of it.</p>
 <p>We create our timesteps as a linear interpolation between 990 and 0, with a step size down of 30 each time, and show the denoising process every fifth step.</p>
 <div class="gallery">
-    <div class="gallery-item-small">
+    <div class="gallery-item">
         <img src="proj5_data/iter_1.png">
         <p>t = 690</p>
     </div>
-    <div class="gallery-item-small">
+    <div class="gallery-item">
         <img src="proj5_data/iter_2.png">
         <p>t = 540</p>
     </div>
-    <div class="gallery-item-small">
+    <div class="gallery-item">
         <img src="proj5_data/iter_3.png">
         <p>t = 390</p>
     </div>
-    <div class="gallery-item-small">
+    <div class="gallery-item">
         <img src="proj5_data/iter_4.png">
         <p>t = 240</p>
     </div>
-    <div class="gallery-item-small">
+    <div class="gallery-item">
         <img src="proj5_data/iter_5.png">
         <p>t = 90</p>
     </div>
-    <div class="gallery-item-small">
+    <div class="gallery-item">
         <img src="proj5_data/im_clean.png">
         <p>t = 0 (denoised)</p>
     </div>
-    <div class="gallery-item-small">
+    <div class="gallery-item">
         <img src="proj5_data/im_noisy.png">
         <p>Fully noisy</p>
     </div>
-    <div class="gallery-item-small">
+    <div class="gallery-item">
         <img src="proj5_data/test_im.jpg">
         <p>Original</p>
     </div>
-    <div class="gallery-item-small">
+    <div class="gallery-item">
         <img src="proj5_data/im_clean_one_step.png">
         <p>Denoised (one-step)</p>
     </div>
-    <div class="gallery-item-small">
+    <div class="gallery-item">
         <img src="proj5_data/im_blur_filter.png">
         <p>Denoised (blur filter)</p>
+    </div>
+</div>
+
+<h2>Diffusion Model Sampling</h2>
+<p>Now that we have a iterative denoising framework in place, we can begin to sample/generate novel images from the model. We accomplish this by feeding an image of complete noise into the denoising process, so that the image generated is completely dependent on the random path that the model chooses to the image domain. By using the null prompt "a high quality photo" we generate 5 random images below:</p>
+<div class="gallery">
+    <div class="gallery-item">
+        <img src="proj5_data/one_1.png">
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/one_2.png">
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/one_3.png">
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/one_4.png">
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/one_5.png">
     </div>
 </div>
 
