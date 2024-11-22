@@ -497,7 +497,7 @@
 </div>
 
 <h2>Text-Conditional Image-to-image Translation</h2>
-<p>So far, we have been using uninteresting prompts and rather random directions for generation. If we instead use a text prompt to guide our model, we can get images that look much more like the goal in mind. In the following images and noise levels, we use the prompt "a rocket ship" at various i_start levels.</p>
+<p>So far, we have been using uninteresting prompts and rather random directions for generation. If we instead use a text prompt to guide our model, we can get images that look much more like the goal in mind. In the following images and noise levels, we use the prompt "a rocket ship" at various i_start levels on the campanille test image.</p>
 <div class="image-row">
     <div class="image-container">
         <img src="proj5_data/rocket_1.png">
@@ -528,7 +528,37 @@
         <div class="image-caption">Original</div>
     </div>
 </div>
-
+<p>In this example, we use the prompt "a lithograph of waterfalls" with the image of bottles on a table:</p>
+<div class="image-row">
+    <div class="image-container">
+        <img src="proj5_data/water1.png">
+        <div class="image-caption">i_start=1</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/water2.png">
+        <div class="image-caption">i_start=3</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/water3.png">
+        <div class="image-caption">i_start=5</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/water4.png">
+        <div class="image-caption">i_start=7</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/water5.png">
+        <div class="image-caption">i_start=10</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/water6.png">
+        <div class="image-caption">i_start=20</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/im1.png">
+        <div class="image-caption">Original</div>
+    </div>
+</div>
 
 <h1>Part B: Diffusion Models from Scratch</h1>
 <p>In this next part, we implement diffusion models from scratch using the U-net neural network architecture. We train our model on the MNIST handwritten digits dataset, then apply the same denoising and sampling processing to generate digits from pure noise.</p>
