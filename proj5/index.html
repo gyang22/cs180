@@ -50,7 +50,7 @@
 <body>
 
 <h1>Project 5: Fun With Diffusion Models</h1>
-<h2>Part A: The Power of Diffusion Models</h2>
+<h1>Part A: The Power of Diffusion Models</h1>
 
 <p>In this project, we explore the implementation and application of diffusion models in denoising images, which can be used to sample "novel" images from pure noise and generate cool artwork/visual anagrams.</p>
 
@@ -180,9 +180,10 @@
 </div>
 
 
-<h2>Part B: Diffusion Models from Scratch</h2>
+<h1>Part B: Diffusion Models from Scratch</h1>
 <p>In this next part, we implement diffusion models from scratch using the U-net neural network architecture. We train our model on the MNIST handwritten digits dataset, then apply the same denoising and sampling processing to generate digits from pure noise.</p>
-
+<h1>Training a Single-Step Denoising UNet</h1>
+<p>Our first goal was to build a one-step denoiser like in part A.</p>
 <h2>Implementing the UNet</h2>
 <p>Using PyTorch, we implement the general structure of the U-net as described below:</p>
 <div style="display: flex;
@@ -192,6 +193,13 @@ align-items: center;">
 </div>
 
 <h2>Using the UNet to Train a Denoiser</h2>
+<p>Our first step is to have a way to apply noise to clean images, in this cases standard normal noise scaled by a constant sigma. The noise levels are shown below for varying sigma:</p>
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="proj5_data/blur_levels.png" style="width: 40%; height: auto; margin: auto;">
+</div>
+<h2>Training</h2>
 <p>In order to train the model, we take clean images of digits and apply Gaussian noise to them with sigma = 0.5, then run gradient descent on the mean squared error between the clean image and predicted output. Below is the training loss curve over 5 epochs.</p>
 <div style="display: flex;
 justify-content: center;
@@ -210,14 +218,48 @@ justify-content: center;
 align-items: center;">
     <img src="proj5_data/one_step_results_5.png" style="width: 40%; height: auto; margin: auto;">
 </div>
+<h2>Out-of-Distribution Testing</h2>
 <p>Further, to test on sigma/noise values other than 0.5, we also did out-of-distribution testing, noting the lower quality for higher noise levels it was not trained on:</p>
 <div style="display: flex;
 justify-content: center;
 align-items: center;">
-    <img src="proj5_data/one_step_out.png" style="width: 40%; height: auto; margin: auto;">
+    <img src="proj5_data/one_step_out.png" style="width: 80%; height: auto; margin: auto;">
 </div>
 
+<h1>Training a Diffusion Model</h1>
+<p>Now, instead of just directly predicting the clean image from the noisy, we attempt to predict the noise in the image instead, much like the DeepFloyd model from part A. We create a list of scaling factors and their inverses, alpha and beta, then iteratively subtract small amounts of noise from the image like in part A.</p>
 
+<h2>Adding Time Conditioning to UNet</h2>
+<p>In order to additionally condition the model output on the timestep t, we need to inject the timestep into the network using a fully connected block, and then sum into the intermediate steps. The timestep is scaled to be in [0, 1] before injecting to better be understoof by the model.</p>
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="proj5_data/fc_diagram.png" style="width: 70%; height: auto; margin: auto;">
+</div>
+
+<h2>Training the UNet</h2>
+<p>Training the model follows a similar process to before, but this time we generate a random t for each image and apply that level of noise to the image prior to input, so that the model is exposed to all levels of noise and time. The training loss curve (in log scale) is shown below:</p>
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="proj5_data/time_loss.png" style="width: 40%; height: auto; margin: auto;">
+</div>
+
+<h2>Sampling from the UNet</h2>
+<p>Finally, we can sample from the model like in part A, to generate digits from pure noise. We start with a pure noise image, then iteratively denoise with decreasing timesteps, until we eventually reach timestep 0, a theoretically clean digit.</p>
+<p>Sampling results after epoch 5:</p>
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="proj5_data/time_5_results.png" style="width: 60%; height: auto; margin: auto;">
+</div>
+<p>Results after epoch 20:</p>
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="proj5_data/time_20_results.png" style="width: 60%; height: auto; margin: auto;">
+</div>
+<p>There are clearly some problems with this approach, as many of the generated digits do not make sense. We fix this in the next section.</p>
 
 </body>
 </html>
