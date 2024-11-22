@@ -114,7 +114,7 @@
 <p>With lower noise levels, the blur denoising works alright, but as the noise increases it becomes more obvious, and we also sacrifice image clarity in this way.</p>
 
 <h2>One-Step Denoising</h2>
-<p>We can improve this performance by using a diffusion model to predict the noise in the image. In this section, we use a pretrained model for simplicity, to which we can feed the noisy image and get a noise estimate as an output, then scale this noise by the inverse factor we multiplied by in the original forward step. The results for model-predicted denoising is shown for the three levels:</p>
+<p>We can improve this performance by using a diffusion model to predict the noise in the image. In this section, we use a pretrained model for simplicity, to which we can feed the noisy image and the timestep/scale of the noise t, and get a noise estimate as an output, then scale this noise by the inverse factor we multiplied by in the original forward step. The results for model-predicted denoising is shown for the three levels:</p>
 <div class="gallery">
     <div class="gallery-item">
         <img src="proj5_data/test_im_250.jpg">
@@ -134,7 +134,50 @@
 </div>
 
 <h2>Iterative Denoising</h2>
-<p></p>
+<p>In order to improve our performance, we can instead iteratively denoise the image by iterating on our timesteps, and slowly subtracting the predicted noise at each level. The formula involves the noise scaling factor we originally noised the image with, then we attempt to predict the next cleaner step of the image by getting the model's estimate, then subtracting a scaled version of it from the blurry image, then add back some additional noise to aid in our "search" for the optimal image. Once we reach the final timestep, we have found our clean image, or our best estimate of it.</p>
+<p>We create our timesteps as a linear interpolation between 990 and 0, with a step size down of 30 each time, and show the denoising process every fifth step.</p>
+<div class="gallery">
+    <div class="gallery-item-small">
+        <img src="proj5_data/iter_1.png">
+        <p>t = 690</p>
+    </div>
+    <div class="gallery-item-small">
+        <img src="proj5_data/iter_2.png">
+        <p>t = 540</p>
+    </div>
+    <div class="gallery-item-small">
+        <img src="proj5_data/iter_3.png">
+        <p>t = 390</p>
+    </div>
+    <div class="gallery-item-small">
+        <img src="proj5_data/iter_4.png">
+        <p>t = 240</p>
+    </div>
+    <div class="gallery-item-small">
+        <img src="proj5_data/iter_5.png">
+        <p>t = 90</p>
+    </div>
+    <div class="gallery-item-small">
+        <img src="proj5_data/im_clean.png">
+        <p>t = 0 (denoised)</p>
+    </div>
+    <div class="gallery-item-small">
+        <img src="proj5_data/im_clean.png">
+        <p>t = 0 (denoised)</p>
+    </div>
+    <div class="gallery-item-small">
+        <img src="proj5_data/test_im.jpg">
+        <p>Original</p>
+    </div>
+    <div class="gallery-item-small">
+        <img src="proj5_data/im_clean_one_step.png">
+        <p>Denoised (one-step)</p>
+    </div>
+    <div class="gallery-item-small">
+        <img src="proj5_data/im_blur_filter.png">
+        <p>Denoised (blur filter)</p>
+    </div>
+</div>
 
 
 <h2>Part B: Diffusion Models from Scratch</h2>
@@ -153,7 +196,7 @@ align-items: center;">
 <div style="display: flex;
 justify-content: center;
 align-items: center;">
-    <img src="proj5_data/single_step_loss.png" style="width: 70%; height: auto; margin: auto;">
+    <img src="proj5_data/single_step_loss.png" style="width: 40%; height: auto; margin: auto;">
 </div>
 <p>Testing our model on test set images also made noisy with sigma 0.5 yields the following results:</p>
 
