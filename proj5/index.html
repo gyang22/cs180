@@ -220,8 +220,103 @@
 </div>
 
 <h2>Image-to-image Translation</h2>
-<p>We can edit existing images by applying noise to them, then using CFG to denoise them back to the original image domain. As we continue to increase the amount of added noise, the resulting image becomes further from the original, leaving room for "creative" interpretation.</p>
+<p>We can edit existing images by applying noise to them, then using CFG to denoise them back to the original image domain. As we continue to increase the amount of added noise, the resulting image becomes further from the original, leaving room for "creative" interpretation. The following images are at different i_start values, where i_start is the timestep start/noise start, i=0 being the noisiest.</p>
+<div class="gallery">
+    <div class="gallery-item">
+        <img src="proj5_data/imm_1.png">
+        <p>i_start=1</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/imm_2.png">
+        <p>i_start=3</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/imm_3.png">
+        <p>i_start=5</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/imm_4.png">
+        <p>i_start=7</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/imm_5.png">
+        <p>i_start=10</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/imm_6.png">
+        <p>i_start=20</p>
+    </div>
+</div>
+<p>We also see the results for two other test images:</p>
+<div class="gallery">
+    <div class="gallery-item">
+        <img src="proj5_data/im1.png">
+        <p>Bottles on a table</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/im2.png">
+        <p>Laptop</p>
+    </div>
+</div>
+<p>Bottles on a table:</p>
+<div class="gallery">
+    <div class="gallery-item">
+        <img src="proj5_data/im1_1.png">
+        <p>i_start=1</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/im1_2.png">
+        <p>i_start=3</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/im1_3.png">
+        <p>i_start=5</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/im1_4.png">
+        <p>i_start=7</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/im1_5.png">
+        <p>i_start=10</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/im1_6.png">
+        <p>i_start=20</p>
+    </div>
+</div>
+<p>Laptop:</p>
+<div class="gallery">
+    <div class="gallery-item">
+        <img src="proj5_data/im2_1.png">
+        <p>i_start=1</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/im2_2.png">
+        <p>i_start=3</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/im2_3.png">
+        <p>i_start=5</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/im2_4.png">
+        <p>i_start=7</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/im2_5.png">
+        <p>i_start=10</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/im2_6.png">
+        <p>i_start=20</p>
+    </div>
+</div>
 
+
+
+
+<h2>Editing Hand-Drawn and Web Images</h2>
 
 <h1>Part B: Diffusion Models from Scratch</h1>
 <p>In this next part, we implement diffusion models from scratch using the U-net neural network architecture. We train our model on the MNIST handwritten digits dataset, then apply the same denoising and sampling processing to generate digits from pure noise.</p>
