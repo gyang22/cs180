@@ -457,9 +457,77 @@
     </div>
 </div>
 <p>We also test on two more images/masks:</p>
+<p>Water bottle:</p>
+<div class="image-row">
+    <div class="image-container">
+        <img src="proj5_data/bottle.png">
+        <div class="image-caption">Original</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/bottle_mask.png">
+        <div class="image-caption">Mask</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/bottle_to_replace.png">
+        <div class="image-caption">To be replaced</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/bottle_output.png">
+        <div class="image-caption">Output</div>
+    </div>
+</div>
+<p>Computer:</p>
+<div class="image-row">
+    <div class="image-container">
+        <img src="proj5_data/computer.png">
+        <div class="image-caption">Original</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/computer_mask.png">
+        <div class="image-caption">Mask</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/computer_to_replace.png">
+        <div class="image-caption">To be replaced</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/computer_output.png">
+        <div class="image-caption">Output</div>
+    </div>
+</div>
 
-
-
+<h2>Text-Conditional Image-to-image Translation</h2>
+<p>So far, we have been using uninteresting prompts and rather random directions for generation. If we instead use a text prompt to guide our model, we can get images that look much more like the goal in mind. In the following images and noise levels, we use the prompt "a rocket ship" at various i_start levels.</p>
+<div class="image-row">
+    <div class="image-container">
+        <img src="proj5_data/rocket_1.png">
+        <div class="image-caption">i_start=1</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/rocket_2.png">
+        <div class="image-caption">i_start=3</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/rocket_3.png">
+        <div class="image-caption">i_start=5</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/rocket_4.png">
+        <div class="image-caption">i_start=7</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/rocket_5.png">
+        <div class="image-caption">i_start=10</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/rocket_6.png">
+        <div class="image-caption">i_start=20</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/test_im.png">
+        <div class="image-caption">Original</div>
+    </div>
+</div>
 
 
 <h1>Part B: Diffusion Models from Scratch</h1>
