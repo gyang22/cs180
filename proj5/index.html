@@ -45,6 +45,31 @@
             text-align: center;
             color: #555;
         }
+        .image-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 10px;
+        }
+
+        .image-container {
+            text-align: center;
+            flex: 1;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .image-caption {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #555;
+        }
     </style>
 </head>
 <body>
@@ -313,10 +338,72 @@
     </div>
 </div>
 
-
-
-
 <h2>Editing Hand-Drawn and Web Images</h2>
+<p>This technique can also be used with web/hand drawn images. In the first example, we start with a cartoon image of a penguin from the web:</p>
+<div class="gallery">
+    <div class="gallery-item">
+        <img src="proj5_data/web1.png">
+        <p>Original</p>
+    </div>
+</div>
+<div class="gallery">
+    <div class="gallery-item">
+        <img src="proj5_data/web1_1.png">
+        <p>i_start=1</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/web1_2.png">
+        <p>i_start=3</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/web1_3.png">
+        <p>i_start=5</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/web1_4.png">
+        <p>i_start=7</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/web1_5.png">
+        <p>i_start=10</p>
+    </div>
+    <div class="gallery-item">
+        <img src="proj5_data/web1_6.png">
+        <p>i_start=20</p>
+    </div>
+</div>
+<p>We also try this on a couple hand-drawn images:</p>
+<p>Some buildings:</p>
+<div class="image-row">
+    <div class="image-container">
+        <img src="proj5_data/draw1_1.png">
+        <div class="image-caption">i_start=1</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/draw1_2.png">
+        <div class="image-caption">i_start=3</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/draw1_3.png">
+        <div class="image-caption">i_start=5</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/draw1_4.png">
+        <div class="image-caption">i_start=7</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/draw1_5.png">
+        <div class="image-caption">i_start=10</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/draw1_6.png">
+        <div class="image-caption">i_start=20</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/draw1.png">
+        <div class="image-caption">Original</div>
+    </div>
+</div>
 
 <h1>Part B: Diffusion Models from Scratch</h1>
 <p>In this next part, we implement diffusion models from scratch using the U-net neural network architecture. We train our model on the MNIST handwritten digits dataset, then apply the same denoising and sampling processing to generate digits from pure noise.</p>
