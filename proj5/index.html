@@ -261,5 +261,27 @@ align-items: center;">
 </div>
 <p>There are clearly some problems with this approach, as many of the generated digits do not make sense. We fix this in the next section.</p>
 
+<h2>Adding Class-Conditioning to UNet</h2>
+<p>We can add the option to additionally condition our model on the class (aka digit 0-9) of the image. This allows us to more specifically sample digits from each class, by passing in a one-hot vector representing the digit. We can also choose to unconditionally generate by passing in a vector of all zeros. We can account for this null condition by randomly setting some class vectors to 0 during training, with probability 10%. The training loss curve in log scale is shown below:</p>
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="proj5_data/class_loss.png" style="width: 40%; height: auto; margin: auto;">
+</div>
+
+<h2>Sampling from the Class-Conditioned UNet</h2>
+<p>Much like in part A, we need classifer-free guidance to assist our results, so we generate a null result alongside a class-conditioned result then combine them with a scale factor of 5.0. Otherwise the sampling process is much the same as the other iterative denoising cycles.</p>
+<p>Sampling after epoch 5:</p>
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="proj5_data/class_results_5.png" style="width: 60%; height: auto; margin: auto;">
+</div>
+<p>After epoch 20:</p>
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="proj5_data/class_results_20.png" style="width: 60%; height: auto; margin: auto;">
+</div>
 </body>
 </html>
