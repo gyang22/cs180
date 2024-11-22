@@ -81,39 +81,39 @@
 
 <h2>Testing Prompts</h2>
 <p>We use a pretrained model called DeepFloyd to save compute, which is originally intended for text-to-image use. We get around this by using a "null" prompt of "a high quality photo" which serves as a general prompt, but here we also display some of the pretrained text to image capabilities:</p>
-<div class="gallery">
-    <div class="gallery-item">
+<div class="image-row">
+    <div class="image-container">
         <img src="proj5_data/snowy.png">
-        <p>Prompt: an oil painting of a snowy mountain village</p>
+        <div class="image-caption">Prompt: an oil painting of a snowy mountain village</div>
     </div>
-    <div class="gallery-item">
+    <div class="image-container">
         <img src="proj5_data/hat.png">
-        <p>Prompt: a man wearing a hat</p>
+        <div class="image-caption">Prompt: a man wearing a hat</div>
     </div>
-    <div class="gallery-item">
+    <div class="image-container">
         <img src="proj5_data/rocket.png">
-        <p>Prompt: a rocket ship</p>
+        <div class="image-caption">Prompt: a rocket ship</div>
     </div>
 </div>
 
 <h2>Implementing the Forward Process</h2>
 <p>First, we need a way to add noise to clean images at different levels. We implement a function that adds scaled Gaussian noise to images, and show the results at levels 0 (no noise), 250, 500, and 750.</p>
-<div class="gallery">
-    <div class="gallery-item">
+<div class="image-row">
+    <div class="image-container">
         <img src="proj5_data/test_im.jpg">
-        <p>0</p>
+        <div class="image-caption">0</div>
     </div>
-    <div class="gallery-item">
+    <div class="image-container">
         <img src="proj5_data/test_im_250.jpg">
-        <p>250</p>
+        <div class="image-caption">250</div>
     </div>
-    <div class="gallery-item">
+    <div class="image-container">
         <img src="proj5_data/test_im_500.jpg">
-        <p>500</p>
+        <div class="image-caption">500</div>
     </div>
-    <div class="gallery-item">
+    <div class="image-container">
         <img src="proj5_data/test_im_750.jpg">
-        <p>750</p>
+        <div class="image-caption">750</div>
     </div>
 </div>
 
