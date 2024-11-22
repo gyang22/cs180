@@ -591,6 +591,18 @@
     </div>
 </div>
 
+<h2>Visual Anagrams</h2>
+<p>We can also create optical illusions using diffusion models by including an intermediate step in the denoising process. If we want an image for example that looks like one thing upside down, but another the right side up, then we can do the denoise step regularly, then flip the image and denoise again, then average the results in each step. The results of this process for the prompts "an oil painting of an old man" and "an oil painting of people around a campfire" is shown below:</p>
+<div class="image-row">
+    <div class="image-container">
+        <img src="proj5_data/old_man.png">
+        <div class="image-caption">Old man</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/campfire.png">
+        <div class="image-caption">Campfire (flipped)</div>
+    </div>
+</div>
 
 <h1>Part B: Diffusion Models from Scratch</h1>
 <p>In this next part, we implement diffusion models from scratch using the U-net neural network architecture. We train our model on the MNIST handwritten digits dataset, then apply the same denoising and sampling processing to generate digits from pure noise.</p>
