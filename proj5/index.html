@@ -100,19 +100,19 @@
 <p>First, we need a way to add noise to clean images at different levels. We implement a function that adds scaled Gaussian noise to images, and show the results at levels 0 (no noise), 250, 500, and 750.</p>
 <div class="image-row">
     <div class="image-container">
-        <img src="proj5_data/test_im.jpg">
+        <img src="proj5_data/test_im.png">
         <div class="image-caption">0</div>
     </div>
     <div class="image-container">
-        <img src="proj5_data/test_im_250.jpg">
+        <img src="proj5_data/test_im_250.png">
         <div class="image-caption">250</div>
     </div>
     <div class="image-container">
-        <img src="proj5_data/test_im_500.jpg">
+        <img src="proj5_data/test_im_500.png">
         <div class="image-caption">500</div>
     </div>
     <div class="image-container">
-        <img src="proj5_data/test_im_750.jpg">
+        <img src="proj5_data/test_im_750.png">
         <div class="image-caption">750</div>
     </div>
 </div>
@@ -434,6 +434,33 @@
         <div class="image-caption">Original</div>
     </div>
 </div>
+
+<h2>Inpainting</h2>
+<p>We can also selectively sample on only certain parts of the image, or "inpaint" the image by creating a mask over the image region we want to replace, then after each step of the diffusion process, replace everything outside the mask back to the original image. This way, we selectively generate inside the mask while keeping the seams between the in and outside relatively flawless.</p>
+<p>The campanille test image:</p>
+<div class="image-row">
+    <div class="image-container">
+        <img src="proj5_data/test_im.png">
+        <div class="image-caption">Original</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/mask.png">
+        <div class="image-caption">Mask</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/to_replace.png">
+        <div class="image-caption">To be replaced</div>
+    </div>
+    <div class="image-container">
+        <img src="proj5_data/masked_output.png">
+        <div class="image-caption">Output</div>
+    </div>
+</div>
+<p>We also test on two more images/masks:</p>
+
+
+
+
 
 <h1>Part B: Diffusion Models from Scratch</h1>
 <p>In this next part, we implement diffusion models from scratch using the U-net neural network architecture. We train our model on the MNIST handwritten digits dataset, then apply the same denoising and sampling processing to generate digits from pure noise.</p>
