@@ -207,7 +207,7 @@
 
 <h2>Iterative Denoising</h2>
 <p>In order to improve our performance, we can instead iteratively denoise the image by iterating on our timesteps, and slowly subtracting the predicted noise at each level. The formula involves the noise scaling factor we originally noised the image with, then we attempt to predict the next cleaner step of the image by getting the model's estimate, then subtracting a scaled version of it from the blurry image, then add back some additional noise to aid in our "search" for the optimal image. Once we reach the final timestep, we have found our clean image, or our best estimate of it.</p>
-<p>We create our timesteps as a linear interpolation between 990 and 0, with a step size down of 30 each time, and show the denoising process every fifth step.</p>
+<p>We create our timesteps as a linear interpolation between 990 and 0, with a step size down of 30 each time, and show the denoising process every fifth step, starting from t=690.</p>
 <div class="image-row">
     <div class="image-container">
         <img src="proj5_data/iter_1.png">
@@ -231,7 +231,7 @@
     </div>
     <div class="image-container">
         <img src="proj5_data/im_clean.png">
-        <div class="image-caption">t=0 (denoised)</div>
+        <div class="image-caption">t=0 (iteratively denoised)</div>
     </div>
 </div>
 <div class="image-row">
@@ -274,7 +274,7 @@
 </div>
 
 <h2>Classifier-Free Guidance (CFG)</h2>
-<p>We can improve the quality/sensibility of our generated images by using classifier-free guidance, which is also generating an unconditional noise estimate alongside the conditioned one, then combining them with a scale of 7.0 on their difference. The scale factor controls the strength of this guidance. We get the following images using CFG:</p>
+<p>We can improve the quality/sensibility of our generated images by using classifier-free guidance, which is also generating an unconditional noise estimate alongside the conditioned one using the empty prompt "", then combining them with a scale of 7.0 on their difference. The scale factor controls the strength of this guidance. We get the following images using CFG:</p>
 <div class="image-row">
     <div class="image-container">
         <img src="proj5_data/cfg_1.png">
@@ -741,7 +741,7 @@ align-items: center;">
 <p>Now, instead of just directly predicting the clean image from the noisy, we attempt to predict the noise in the image instead, much like the DeepFloyd model from part A. We create a list of scaling factors and their inverses, alpha and beta, then iteratively subtract small amounts of noise from the image like in part A.</p>
 
 <h2>Adding Time Conditioning to UNet</h2>
-<p>In order to additionally condition the model output on the timestep t, we need to inject the timestep into the network using a fully connected block, and then sum into the intermediate steps. The timestep is scaled to be in [0, 1] before injecting to better be understoof by the model.</p>
+<p>In order to additionally condition the model output on the timestep t, we need to inject the timestep into the network using a fully connected block, and then sum into the intermediate steps. The timestep is scaled to be in [0, 1] before injecting to better be understood by the model.</p>
 <div style="display: flex;
 justify-content: center;
 align-items: center;">
