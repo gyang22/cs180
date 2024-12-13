@@ -182,8 +182,12 @@ align-items: center;">
     <mo fence="false" stretchy="false">}</mo>
   </math>
 <p>For the dataloader, we sample uniformly with a batch size of 10k from the pixels in the image, normalizing the locations and colors to [0, 1].</p>
-<p>We use mean squared error (MSE) for the loss function and the Adam optimizer with a 1e-2 learning rate, training the model for 1000 iterations. We also graph the peak signal-to-noise ratio (PSNR) as a measure of reconstruction quality:</p>
+<p>We use mean squared error (MSE) for the loss function and the Adam optimizer with a 1e-2 learning rate, training the model for 1000 iterations. We also graph the peak signal-to-noise ratio (PSNR) as a measure of reconstruction quality. The model is trained on this image of a fox:</p>
 <div class="image-row">
+    <div class="image-container">
+        <img src="data/fox.jpg">
+        <div class="image-caption">Original Image</div>
+    </div>
     <div class="image-container">
         <img src="data/fox_loss.png">
         <div class="image-caption">MSE Loss</div>
@@ -215,7 +219,7 @@ align-items: center;">
         <div class="image-caption">Iteration 1000</div>
     </div>
 </div>
-<p>Additionally, if we pick a slower learning rate of 5e-4, we can see the more incomplete intermediate inferences of the model as it trains more clearly, and it eventually reaches the same accuracy:</p>
+<p>Additionally, if we pick a slower learning rate of 5e-4, we can see the more incomplete intermediate inferences of the model as it trains more clearly, and it eventually reaches nearly a similar level of accuracy:</p>
 <div class="image-row">
     <div class="image-container">
         <img src="data/fox_loss_slow.png">
@@ -281,5 +285,112 @@ align-items: center;">
         <div class="image-caption">Iteration 1000</div>
     </div>
 </div>
+<p>We can also try running the same hyperparameters again on a picture of a lighthouse instead, with the original set of hyperparameters:</p>
+<div class="image-row">
+    <div class="image-container">
+        <img src="data/lighthouse.jpg">
+        <div class="image-caption">Original Image</div>
+    </div>
+    <div class="image-container">
+        <img src="data/light_loss.png">
+        <div class="image-caption">MSE Loss</div>
+    </div>
+    <div class="image-container">
+        <img src="data/light_psnr.png">
+        <div class="image-caption">PSNR</div>
+    </div>
+</div>
+<div class="image-row">
+    <div class="image-container">
+        <img src="data/light1.png">
+        <div class="image-caption">Iteration 1</div>
+    </div>
+    <div class="image-container">
+        <img src="data/light2.png">
+        <div class="image-caption">Iteration 250</div>
+    </div>
+    <div class="image-container">
+        <img src="data/light3.png">
+        <div class="image-caption">Iteration 500</div>
+    </div>
+    <div class="image-container">
+        <img src="data/light4.png">
+        <div class="image-caption">Iteration 750</div>
+    </div>
+    <div class="image-container">
+        <img src="data/light5.png">
+        <div class="image-caption">Iteration 1000</div>
+    </div>
+</div>
+<p>Then using the slower learning rate of 5e-4:</p>
+<div class="image-row">
+    <div class="image-container">
+        <img src="data/light_loss_slow.png">
+        <div class="image-caption">MSE Loss</div>
+    </div>
+    <div class="image-container">
+        <img src="data/light_psnr_slow.png">
+        <div class="image-caption">PSNR</div>
+    </div>
+</div>
+<div class="image-row">
+    <div class="image-container">
+        <img src="data/light1slow.png">
+        <div class="image-caption">Iteration 1</div>
+    </div>
+    <div class="image-container">
+        <img src="data/light2slow.png">
+        <div class="image-caption">Iteration 250</div>
+    </div>
+    <div class="image-container">
+        <img src="data/light3slow.png">
+        <div class="image-caption">Iteration 500</div>
+    </div>
+    <div class="image-container">
+        <img src="data/light4slow.png">
+        <div class="image-caption">Iteration 750</div>
+    </div>
+    <div class="image-container">
+        <img src="data/light5slow.png">
+        <div class="image-caption">Iteration 1000</div>
+    </div>
+</div>
+<p>And trying the deeper, thinner architecture again:</p>
+<div class="image-row">
+    <div class="image-container">
+        <img src="data/light_loss_deep.png">
+        <div class="image-caption">MSE Loss</div>
+    </div>
+    <div class="image-container">
+        <img src="data/light_psnr_deep.png">
+        <div class="image-caption">PSNR</div>
+    </div>
+</div>
+<div class="image-row">
+    <div class="image-container">
+        <img src="data/light1deep.png">
+        <div class="image-caption">Iteration 1</div>
+    </div>
+    <div class="image-container">
+        <img src="data/light2deep.png">
+        <div class="image-caption">Iteration 250</div>
+    </div>
+    <div class="image-container">
+        <img src="data/light3deep.png">
+        <div class="image-caption">Iteration 500</div>
+    </div>
+    <div class="image-container">
+        <img src="data/light4deep.png">
+        <div class="image-caption">Iteration 750</div>
+    </div>
+    <div class="image-container">
+        <img src="data/light5deep.png">
+        <div class="image-caption">Iteration 1000</div>
+    </div>
+</div>
+<p>The deeper architecture appears to learn the color much later than the shape, maybe implying that the wider layers are able to better embed the color map of the image.</p>
+
+
+
 </body>
 </html>
