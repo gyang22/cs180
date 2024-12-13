@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .gallery-item {
+            width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .gallery-item-small {
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+        }
+        .gallery-item p {
+            padding: 15px;
+            text-align: center;
+            color: #555;
+        }
+        .image-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 10px;
+        }
+
+        .image-container {
+            text-align: center;
+            flex: 1;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .image-caption {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<h1>NeRFs: Neural Radiance Fields</h1>
+
+<p>In this project, we designed a neural radiance field, a neural network designed to generate novel views of 3D objects given multi-view training data of the object. Using this model, we can create seamless videos of objects despite not having complete information about their geometry.</p>
+
+<h2>Neural Fields on 2D Images</h2>
+<p>First, we start by training a more simple network on 2D images, with the goal being to predict the RGB pixel values of a set of coordinates. The model architecture used is a multi-layer perceptron of 4 layers with 256 width, using RELU activation and sigmoid normalization at the end. The diagram is shown below:</p>
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="data/mlp_img.jpg" style="width: 50%; height: auto; margin: auto;">
+</div>
+<p>Before inputting data to the model, we must first positionally encode it to expand its dimensionality, by appending to it a series of sines and cosines as below, where L is the highest level. For the positional data in this project, we used L=10.</p>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+    <mi>P</mi>
+    <mi>E</mi>
+    <mo stretchy="false">(</mo>
+    <mi>x</mi>
+    <mo stretchy="false">)</mo>
+    <mo>=</mo>
+    <mo fence="false" stretchy="false">{</mo>
+    <mi>x</mi>
+    <mo>,</mo>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mo stretchy="false">(</mo>
+    <msup>
+      <mn>2</mn>
+      <mn>0</mn>
+    </msup>
+    <mi>&#x3C0;</mi>
+    <mi>x</mi>
+    <mo stretchy="false">)</mo>
+    <mo>,</mo>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>s</mi>
+    <mo stretchy="false">(</mo>
+    <msup>
+      <mn>2</mn>
+      <mn>0</mn>
+    </msup>
+    <mi>&#x3C0;</mi>
+    <mi>x</mi>
+    <mo stretchy="false">)</mo>
+    <mo>,</mo>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mo stretchy="false">(</mo>
+    <msup>
+      <mn>2</mn>
+      <mn>1</mn>
+    </msup>
+    <mi>&#x3C0;</mi>
+    <mi>x</mi>
+    <mo stretchy="false">)</mo>
+    <mo>,</mo>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>s</mi>
+    <mo stretchy="false">(</mo>
+    <msup>
+      <mn>2</mn>
+      <mn>1</mn>
+    </msup>
+    <mi>&#x3C0;</mi>
+    <mi>x</mi>
+    <mo stretchy="false">)</mo>
+    <mo>,</mo>
+    <mo>.</mo>
+    <mo>.</mo>
+    <mo>.</mo>
+    <mo>,</mo>
+    <mi>s</mi>
+    <mi>i</mi>
+    <mi>n</mi>
+    <mo stretchy="false">(</mo>
+    <msup>
+      <mn>2</mn>
+      <mrow data-mjx-texclass="ORD">
+        <mi>L</mi>
+        <mo>&#x2212;</mo>
+        <mn>1</mn>
+      </mrow>
+    </msup>
+    <mi>&#x3C0;</mi>
+    <mi>x</mi>
+    <mo stretchy="false">)</mo>
+    <mo>,</mo>
+    <mi>c</mi>
+    <mi>o</mi>
+    <mi>s</mi>
+    <mo stretchy="false">(</mo>
+    <msup>
+      <mn>2</mn>
+      <mrow data-mjx-texclass="ORD">
+        <mi>L</mi>
+        <mo>&#x2212;</mo>
+        <mn>1</mn>
+      </mrow>
+    </msup>
+    <mi>&#x3C0;</mi>
+    <mi>x</mi>
+    <mo stretchy="false">)</mo>
+    <mo fence="false" stretchy="false">}</mo>
+  </math>
+<p>For the dataloader, we sample uniformly with a batch size of 10k from the pixels in the image, normalizing the locations and colors to [0, 1].</p>
+<p>We use mean squared error (MSE) for the loss function and the Adam optimizer with a 1e-2 learning rate, training the model for 1000 iterations. We also graph the peak signal-to-noise ratio (PSNR) as a measure of reconstruction quality:</p>
+<div class="image-row">
+    <div class="image-container">
+        <img src="data/fox_loss.png">
+        <div class="image-caption">MSE Loss</div>
+    </div>
+    <div class="image-container">
+        <img src="data/fox_psnr.png">
+        <div class="image-caption">PSNR</div>
+    </div>
+</div>
+<div class="image-row">
+    <div class="image-container">
+        <img src="data/fox1.png">
+        <div class="image-caption">Iteration 1</div>
+    </div>
+    <div class="image-container">
+        <img src="data/fox2.png">
+        <div class="image-caption">Iteration 250</div>
+    </div>
+    <div class="image-container">
+        <img src="data/fox3.png">
+        <div class="image-caption">Iteration 500</div>
+    </div>
+    <div class="image-container">
+        <img src="data/fox4.png">
+        <div class="image-caption">Iteration 750</div>
+    </div>
+    <div class="image-container">
+        <img src="data/fox5.png">
+        <div class="image-caption">Iteration 1000</div>
+    </div>
+</div>
+<p>Additionally, if we pick a slower learning rate of 5e-4, we can see the more incomplete intermediate inferences of the model as it trains more clearly, and it eventually reaches the same accuracy:</p>
+<div class="image-row">
+    <div class="image-container">
+        <img src="data/fox_loss_slow.png">
+        <div class="image-caption">MSE Loss</div>
+    </div>
+    <div class="image-container">
+        <img src="data/fox_psnr_slow.png">
+        <div class="image-caption">PSNR</div>
+    </div>
+</div>
+<div class="image-row">
+    <div class="image-container">
+        <img src="data/fox1slow.png">
+        <div class="image-caption">Iteration 1</div>
+    </div>
+    <div class="image-container">
+        <img src="data/fox2slow.png">
+        <div class="image-caption">Iteration 250</div>
+    </div>
+    <div class="image-container">
+        <img src="data/fox3slow.png">
+        <div class="image-caption">Iteration 500</div>
+    </div>
+    <div class="image-container">
+        <img src="data/fox4slow.png">
+        <div class="image-caption">Iteration 750</div>
+    </div>
+    <div class="image-container">
+        <img src="data/fox5slow.png">
+        <div class="image-caption">Iteration 1000</div>
+    </div>
+</div>
+<p>We also try a more drastic change: keeping the learning rate slower and the iterations the same, as well as all other hyperparameters, we change the hidden layer width to be 64 while also quadrupling the number of hidden layers. The total amount of neurons is around the same, but the performance is noticeably worse, maybe requiring longer to train on a deeper model:</p>
+<div class="image-row">
+    <div class="image-container">
+        <img src="data/fox_loss_deep.png">
+        <div class="image-caption">MSE Loss</div>
+    </div>
+    <div class="image-container">
+        <img src="data/fox_psnr_deep.png">
+        <div class="image-caption">PSNR</div>
+    </div>
+</div>
+<div class="image-row">
+    <div class="image-container">
+        <img src="data/fox1deep.png">
+        <div class="image-caption">Iteration 1</div>
+    </div>
+    <div class="image-container">
+        <img src="data/fox2deep.png">
+        <div class="image-caption">Iteration 250</div>
+    </div>
+    <div class="image-container">
+        <img src="data/fox3deep.png">
+        <div class="image-caption">Iteration 500</div>
+    </div>
+    <div class="image-container">
+        <img src="data/fox4deep.png">
+        <div class="image-caption">Iteration 750</div>
+    </div>
+    <div class="image-container">
+        <img src="data/fox5deep.png">
+        <div class="image-caption">Iteration 1000</div>
+    </div>
+</div>
+</body>
+</html>
