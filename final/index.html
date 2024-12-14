@@ -222,6 +222,10 @@ align-items: center;">
 <p>Additionally, if we pick a slower learning rate of 5e-4, we can see the more incomplete intermediate inferences of the model as it trains more clearly, and it eventually reaches nearly a similar level of accuracy:</p>
 <div class="image-row">
     <div class="image-container">
+        <img src="data/fox.jpg">
+        <div class="image-caption">Original Image</div>
+    </div>
+    <div class="image-container">
         <img src="data/fox_loss_slow.png">
         <div class="image-caption">MSE Loss</div>
     </div>
@@ -254,6 +258,10 @@ align-items: center;">
 </div>
 <p>We also try a more drastic change: keeping the learning rate slower and the iterations the same, as well as all other hyperparameters, we change the hidden layer width to be 64 while also quadrupling the number of hidden layers. The total amount of neurons is around the same, but the performance is noticeably worse, maybe requiring longer to train on a deeper model:</p>
 <div class="image-row">
+    <div class="image-container">
+        <img src="data/fox.jpg">
+        <div class="image-caption">Original Image</div>
+    </div>
     <div class="image-container">
         <img src="data/fox_loss_deep.png">
         <div class="image-caption">MSE Loss</div>
@@ -325,6 +333,10 @@ align-items: center;">
 <p>Then using the slower learning rate of 5e-4:</p>
 <div class="image-row">
     <div class="image-container">
+        <img src="data/lighthouse.jpg">
+        <div class="image-caption">Original Image</div>
+    </div>
+    <div class="image-container">
         <img src="data/light_loss_slow.png">
         <div class="image-caption">MSE Loss</div>
     </div>
@@ -357,6 +369,10 @@ align-items: center;">
 </div>
 <p>And trying the deeper, thinner architecture again:</p>
 <div class="image-row">
+    <div class="image-container">
+        <img src="data/lighthouse.jpg">
+        <div class="image-caption">Original Image</div>
+    </div>
     <div class="image-container">
         <img src="data/light_loss_deep.png">
         <div class="image-caption">MSE Loss</div>
