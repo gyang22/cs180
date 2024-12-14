@@ -761,7 +761,7 @@ align-items: center;">
     </mtable>
   </math>
 <h3>Training and Results</h3>
-<p>With the setup in place, we begin training the model over 2500 iterations with MSE loss and Adam optimizer at a 5e-4 learning rate. We sample with a 10k batch size and manage to reach 25 PSNR after full training. We visualize the PSNR curve on a separate validation dataset and also show the progression of the model on a novel test camera. We also show an example of the sampling process with 100 rays.</p>
+<p>With the setup in place, we begin training the model over 2500 iterations with MSE loss and Adam optimizer at a 5e-4 learning rate. We sample with a 10k batch size and manage to reach 25 PSNR after full training. We visualize the PSNR curve on a separate validation dataset and also show the progression of the model on a novel test camera. We also show an example of the sampling process with 100 rays at a single step.</p>
 <div style="display: flex;
 justify-content: center;
 align-items: center;">
@@ -769,30 +769,34 @@ align-items: center;">
 </div>
 <div class="image-row">
     <div class="image-container">
-        <img src="data/light1deep.png">
+        <img src="data/lego1.png">
         <div class="image-caption">Iteration 1</div>
     </div>
     <div class="image-container">
-        <img src="data/light2deep.png">
-        <div class="image-caption">Iteration 250</div>
+        <img src="data/lego2.png">
+        <div class="image-caption">Iteration 100</div>
     </div>
     <div class="image-container">
-        <img src="data/light3deep.png">
-        <div class="image-caption">Iteration 500</div>
+        <img src="data/lego3.png">
+        <div class="image-caption">Iteration 200</div>
     </div>
     <div class="image-container">
-        <img src="data/light4deep.png">
-        <div class="image-caption">Iteration 750</div>
+        <img src="data/lego4.png">
+        <div class="image-caption">Iteration 600</div>
     </div>
     <div class="image-container">
-        <img src="data/light5deep.png">
+        <img src="data/lego5.png">
         <div class="image-caption">Iteration 1000</div>
+    </div>
+    <div class="image-container">
+        <img src="data/lego6.png">
+        <div class="image-caption">Iteration 2500</div>
     </div>
 </div>
 <div style="display: flex;
 justify-content: center;
 align-items: center;">
-    <img src="data/sample_render.png" style="width: 30%; height: auto; margin: auto;">
+    <img src="data/validation_psnr.png" style="width: 30%; height: auto; margin: auto;">
 </div>
 
 <p>The resulting video generated from novel-view test cameras:</p>
