@@ -390,7 +390,400 @@ align-items: center;">
 </div>
 <p>The deeper architecture appears to learn the color much later than the shape, maybe implying that the wider layers are able to better embed the color map of the image.</p>
 
+<h2>Fitting a Neural Radiance Field from Multi-view Images</h2>
+<p>The previous task may have seemed more trivial, but we now pivot to training a model to represent a 3D space through inverse rendering from multi-view calibrated images. The cameras and images are taken from the original <a href="https://www.matthewtancik.com/nerf">NeRF</a> paper, and the below image shows the setup of cameras around the object with training cameras in black, validation in red, and testing in green:</p>
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="data/cameras.png" style="width: 50%; height: auto; margin: auto;">
+</div>
+<h3>Creating Rays from Cameras</h3>
+<p>Since our input is images taken from calibrated cameras, we must transform between points in the camera space and world space. We have a 3x3 rotation matrix R and a translation vector t that combine to create the world-to-camera (w2c) matrix:</p>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+    <mtable displaystyle="true" columnalign="right" columnspacing="" rowspacing="3pt">
+      <mtr>
+        <mtd>
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">[</mo>
+            <mtable columnalign="center" columnspacing="1em" rowspacing="4pt">
+              <mtr>
+                <mtd>
+                  <msub>
+                    <mi>x</mi>
+                    <mi>c</mi>
+                  </msub>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <msub>
+                    <mi>y</mi>
+                    <mi>c</mi>
+                  </msub>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <msub>
+                    <mi>z</mi>
+                    <mi>c</mi>
+                  </msub>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">]</mo>
+          </mrow>
+          <mo>=</mo>
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">[</mo>
+            <mtable columnalign="center" columnspacing="1em" rowspacing="4pt">
+              <mtr>
+                <mtd>
+                  <msub>
+                    <mrow data-mjx-texclass="ORD">
+                      <mi mathvariant="bold">R</mi>
+                    </mrow>
+                    <mrow data-mjx-texclass="ORD">
+                      <mn>3</mn>
+                      <mo>&#xD7;</mo>
+                      <mn>3</mn>
+                    </mrow>
+                  </msub>
+                </mtd>
+                <mtd>
+                  <mrow data-mjx-texclass="ORD">
+                    <mi mathvariant="bold">t</mi>
+                  </mrow>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <msub>
+                    <mrow data-mjx-texclass="ORD">
+                      <mn mathvariant="bold">0</mn>
+                    </mrow>
+                    <mrow data-mjx-texclass="ORD">
+                      <mn>1</mn>
+                      <mo>&#xD7;</mo>
+                      <mn>3</mn>
+                    </mrow>
+                  </msub>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">]</mo>
+          </mrow>
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">[</mo>
+            <mtable columnalign="center" columnspacing="1em" rowspacing="4pt">
+              <mtr>
+                <mtd>
+                  <msub>
+                    <mi>x</mi>
+                    <mi>w</mi>
+                  </msub>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <msub>
+                    <mi>y</mi>
+                    <mi>w</mi>
+                  </msub>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <msub>
+                    <mi>z</mi>
+                    <mi>w</mi>
+                  </msub>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">]</mo>
+          </mrow>
+        </mtd>
+      </mtr>
+    </mtable>
+  </math>
+<p>Thus, to transform in the other direction, from camera to world, we take the inverse of the w2c matrix (c2w) and matmul with our points.</p>
+<p>Next, given a pinhole camera model with focal length f_x, f_y, and principal point (o_x = image_width / 2, o_y = image_height / 2), we create its intrinsic matrix K:</p>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+    <mtable displaystyle="true" columnalign="right" columnspacing="" rowspacing="3pt">
+      <mtr>
+        <mtd>
+          <mrow data-mjx-texclass="ORD">
+            <mi mathvariant="bold">K</mi>
+          </mrow>
+          <mo>=</mo>
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">[</mo>
+            <mtable columnalign="center" columnspacing="1em" rowspacing="4pt">
+              <mtr>
+                <mtd>
+                  <msub>
+                    <mi>f</mi>
+                    <mi>x</mi>
+                  </msub>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <msub>
+                    <mi>o</mi>
+                    <mi>x</mi>
+                  </msub>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <msub>
+                    <mi>f</mi>
+                    <mi>y</mi>
+                  </msub>
+                </mtd>
+                <mtd>
+                  <msub>
+                    <mi>o</mi>
+                    <mi>y</mi>
+                  </msub>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>0</mn>
+                </mtd>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">]</mo>
+          </mrow>
+        </mtd>
+      </mtr>
+    </mtable>
+  </math>
+<p>and use it to project 3D points to 2D points on the image plane.</p>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+    <mtable displaystyle="true" columnalign="right" columnspacing="" rowspacing="3pt">
+      <mtr>
+        <mtd>
+          <mi>s</mi>
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">[</mo>
+            <mtable columnalign="center" columnspacing="1em" rowspacing="4pt">
+              <mtr>
+                <mtd>
+                  <mi>u</mi>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <mi>v</mi>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">]</mo>
+          </mrow>
+          <mo>=</mo>
+          <mrow data-mjx-texclass="ORD">
+            <mi mathvariant="bold">K</mi>
+          </mrow>
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">[</mo>
+            <mtable columnalign="center" columnspacing="1em" rowspacing="4pt">
+              <mtr>
+                <mtd>
+                  <msub>
+                    <mi>x</mi>
+                    <mi>c</mi>
+                  </msub>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <msub>
+                    <mi>y</mi>
+                    <mi>c</mi>
+                  </msub>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd>
+                  <msub>
+                    <mi>z</mi>
+                    <mi>c</mi>
+                  </msub>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">]</mo>
+          </mrow>
+        </mtd>
+      </mtr>
+    </mtable>
+  </math>
+<p>Once we are given the 2D location pixels, we can define a ray given as an origin and a direction, for each pixel in the image. The origins are just the camera that captured them, and the direction can be computed by taking a point on the ray at depth 1 and subtracting and normalizing the origin from its world coordinate.</p>
 
+<h3>Sampling</h3>
+<p>With the definitions in place, we can implement the sampling process. We flatten all training set image pixels and choose N uniformly, then use the above equations to transform these pixels into rays. We then sample uniformly along these rays to get world points, adding small noise pertubations to avoid overfitting. We choose 32 points along each ray, with 10k pixels sampled in each iteration.</p>
 
+<h3>Visualizing Dataloader</h3>
+<p>Using provided starter code, we can visualize the sampling process with the rays and points from each camera:</p>
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="data/sample_render.png" style="width: 50%; height: auto; margin: auto;">
+</div>
+
+<h3>Neural Radiance Field Architecture</h3>
+<p>We use a modified multi-layer perceptron structure with a feedforward injection of the input to help the model remember, as well as splitting the hidden layers into simultaneous density and color prediction. The model takes as input the 3D coordinates of the world points as well as the ray direction they affect.</p>
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="data/mlp_nerf.png" style="width: 50%; height: auto; margin: auto;">
+</div>
+
+<h3>Volume Rendering</h3>
+<p>Given the color and density predictions at each point along a ray, we can compute an estimate of the contributions each point gives to the overall volume of the object. We use a discrete approximation instead of the full integral, since we only sample at 32 points, and sum over the points:</p>
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+    <mtable displaystyle="true" columnalign="right" columnspacing="" rowspacing="3pt">
+      <mtr>
+        <mtd>
+          <mrow data-mjx-texclass="ORD">
+            <mover>
+              <mi>C</mi>
+              <mo stretchy="false">^</mo>
+            </mover>
+          </mrow>
+          <mo stretchy="false">(</mo>
+          <mrow data-mjx-texclass="ORD">
+            <mi mathvariant="bold">r</mi>
+          </mrow>
+          <mo stretchy="false">)</mo>
+          <mo>=</mo>
+          <munderover>
+            <mo data-mjx-texclass="OP">&#x2211;</mo>
+            <mrow data-mjx-texclass="ORD">
+              <mi>i</mi>
+              <mo>=</mo>
+              <mn>1</mn>
+            </mrow>
+            <mi>N</mi>
+          </munderover>
+          <msub>
+            <mi>T</mi>
+            <mi>i</mi>
+          </msub>
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">(</mo>
+            <mn>1</mn>
+            <mo>&#x2212;</mo>
+            <mi>exp</mi>
+            <mo data-mjx-texclass="NONE">&#x2061;</mo>
+            <mrow data-mjx-texclass="INNER">
+              <mo data-mjx-texclass="OPEN">(</mo>
+              <mo>&#x2212;</mo>
+              <msub>
+                <mi>&#x3C3;</mi>
+                <mi>i</mi>
+              </msub>
+              <msub>
+                <mi>&#x3B4;</mi>
+                <mi>i</mi>
+              </msub>
+              <mo data-mjx-texclass="CLOSE">)</mo>
+            </mrow>
+            <mo data-mjx-texclass="CLOSE">)</mo>
+          </mrow>
+          <msub>
+            <mrow data-mjx-texclass="ORD">
+              <mi mathvariant="bold">c</mi>
+            </mrow>
+            <mi>i</mi>
+          </msub>
+          <mo>,</mo>
+          <mtext>&#xA0;where&#xA0;</mtext>
+          <msub>
+            <mi>T</mi>
+            <mi>i</mi>
+          </msub>
+          <mo>=</mo>
+          <mi>exp</mi>
+          <mo data-mjx-texclass="NONE">&#x2061;</mo>
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">(</mo>
+            <mo>&#x2212;</mo>
+            <munderover>
+              <mo data-mjx-texclass="OP">&#x2211;</mo>
+              <mrow data-mjx-texclass="ORD">
+                <mi>j</mi>
+                <mo>=</mo>
+                <mn>1</mn>
+              </mrow>
+              <mrow data-mjx-texclass="ORD">
+                <mi>i</mi>
+                <mo>&#x2212;</mo>
+                <mn>1</mn>
+              </mrow>
+            </munderover>
+            <msub>
+              <mi>&#x3C3;</mi>
+              <mi>j</mi>
+            </msub>
+            <msub>
+              <mi>&#x3B4;</mi>
+              <mi>j</mi>
+            </msub>
+            <mo data-mjx-texclass="CLOSE">)</mo>
+          </mrow>
+        </mtd>
+      </mtr>
+    </mtable>
+  </math>
+<p>Training and Results</p>
+<p>With the setup in place, we begin training the model over 2500 iterations with MSE loss and Adam optimizer at a 5e-4 learning rate. We sample with a 10k batch size and manage to reach 25 PSNR after full training. We visualize the PSNR curve on a separate validation dataset and also show the progression of the model on a novel test camera. We also show another example of the sampling process with 32 points per ray, with 100 rays.</p>
+
+<p>The resulting video generated from novel-view test cameras:</p>
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="data/lego_gif.gif" style="width: 50%; height: auto; margin: auto;">
+</div>
+
+<h3>Bells and Whistles</h3>
+<p>We can modify the volume rendering equation to change the resulting background color of the images. Rather than having no contribution, we add an additional term to the sum consisting of the transmittance after the last sample, or the light that escapes the volume, scaled by the background color of our choosing. We use dark blue in the example below:</p>
+<div style="display: flex;
+justify-content: center;
+align-items: center;">
+    <img src="data/blue_lego_gif.gif" style="width: 50%; height: auto; margin: auto;">
+</div>
 </body>
 </html>
